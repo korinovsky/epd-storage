@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "epd-storage": {
+      "hosting": {
+        "epd-storage": [
+          "epd-storage"
+        ]
+      }
+    }
+  }
+}
