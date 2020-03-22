@@ -1,8 +1,8 @@
-<button mat-button (click)="addEpd()">Добавить</button>
+<button (click)="addEpd()" mat-button>Добавить</button>
 <ul>
     <li *ngFor="let epd of epds | async">
         {{ epd | json }}
-        <button mat-icon-button (click)="remove(epd)">
+        <button (click)="remove(epd)" mat-icon-button>
             <mat-icon>clear</mat-icon>
         </button>
     </li>

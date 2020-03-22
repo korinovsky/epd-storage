@@ -17,4 +17,5 @@ import {MatIconModule} from "@angular/material/icon";
         MatIconModule
     ]
 })
-export class StorageModule {}
+export class StorageModule {
+}
