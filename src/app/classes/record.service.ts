@@ -1,5 +1,5 @@
-import {AngularFirestore, AngularFirestoreCollection, fromDocRef} from "@angular/fire/firestore";
-import {first, map, switchMap} from "rxjs/operators";
+import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firestore";
+import {map} from "rxjs/operators";
 import {fromPromise} from "rxjs/internal-compatibility";
 import {Observable} from "rxjs";
 
@@ -15,8 +15,11 @@ const mapDocument = payload => ({
 export abstract class AbstractRecordService<T extends Record> {
     private collection: AngularFirestoreCollection<T>;
 
-    constructor(afs: AngularFirestore) {
-        this.collection = afs.collection<T>('epds');
+    protected constructor(
+        path: string,
+        private afs: AngularFirestore
+    ) {
+        this.collection = afs.collection<T>(path);
     }
 
     delete(id: string): Observable<void> {
@@ -24,10 +27,10 @@ export abstract class AbstractRecordService<T extends Record> {
     }
 
     add(item: T): Observable<T> {
-        return fromPromise(this.collection.add(item)).pipe(
-            switchMap(ref => fromDocRef<T>(ref)),
-            first(),
-            map(({payload}) => mapDocument(payload))
+        const id = this.afs.createId();
+        const newItem: T = {id, ...item};
+        return fromPromise(this.collection.doc(id).set(newItem)).pipe(
+            map(() => newItem)
         );
     }
 

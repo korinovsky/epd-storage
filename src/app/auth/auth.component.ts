@@ -1,7 +1,5 @@
 import {Component} from '@angular/core';
-import {AngularFireAuth} from '@angular/fire/auth';
-import firebase from 'firebase';
-import {FirebaseAuth} from "@angular/fire";
+import {AuthService, User} from "../core/auth.service";
 
 @Component({
     selector: 'app-auth',
@@ -9,21 +7,18 @@ import {FirebaseAuth} from "@angular/fire";
     styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent {
-    private user: firebase.User;
-    private auth: FirebaseAuth;
-
-    constructor(auth: AngularFireAuth) {
-        auth.user.subscribe(user => console.log(this.user = user));
-        this.auth = auth.auth;
+    user: User;
+    constructor(
+        private auth: AuthService
+    ) {
+        this.auth.user$.subscribe(user => this.user = user);
     }
 
     login() {
-        this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-            .then(user => this.user = user.user);
+        this.auth.login();
     }
 
     logout() {
-        this.auth.signOut()
-            .then(() => this.user = null);
+        this.auth.logout();
     }
 }

@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Epd} from "./storage.model";
 import {Observable} from "rxjs";
 import {StorageService} from "./storage.service";
+import {AuthService} from "../core/auth.service";
 
 @Component({
     selector: 'app-storage',
@@ -10,10 +11,15 @@ import {StorageService} from "./storage.service";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StorageComponent {
-    epds: Observable<Epd[]>;
+    epds$: Observable<Epd[]>;
+    isUserLoggedIn$: Observable<boolean>;
 
-    constructor(private storage: StorageService) {
-        this.epds = storage.list();
+    constructor(
+        private storage: StorageService,
+        private auth: AuthService,
+    ) {
+        this.epds$ = storage.list();
+        this.isUserLoggedIn$ = this.auth.isUserLoggedIn$;
     }
 
     remove({id}: Epd) {

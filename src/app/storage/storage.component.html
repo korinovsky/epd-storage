@@ -1,9 +1,9 @@
-<button (click)="addEpd()" mat-button>Добавить</button>
 <ul>
-    <li *ngFor="let epd of epds | async">
+    <li *ngFor="let epd of epds$ | async">
         {{ epd | json }}
-        <button (click)="remove(epd)" mat-icon-button>
+        <button (click)="remove(epd)" *ngIf="isUserLoggedIn$ | async" mat-icon-button>
             <mat-icon>clear</mat-icon>
         </button>
     </li>
 </ul>
+<button (click)="addEpd()" *ngIf="isUserLoggedIn$ | async" mat-button>Добавить</button>

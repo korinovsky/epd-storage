@@ -10,7 +10,7 @@ import {map, tap} from "rxjs/operators";
 })
 export class StorageService extends AbstractRecordService<Epd> {
     constructor(afs: AngularFirestore) {
-        super(afs);
+        super('epds', afs);
     }
 
     list(): Observable<Epd[]> {

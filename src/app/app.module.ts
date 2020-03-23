@@ -6,6 +6,7 @@ import {StorageModule} from "./storage/storage.module";
 import {AngularFireModule} from "@angular/fire";
 import {environment} from "../environments/environment";
 import {AuthModule} from "./auth/auth.module";
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 @NgModule({
     declarations: [
@@ -17,6 +18,7 @@ import {AuthModule} from "./auth/auth.module";
         AngularFireModule.initializeApp(environment.firebase),
         StorageModule,
         AuthModule,
+        MatToolbarModule,
     ],
     providers: [],
     bootstrap: [AppComponent]
