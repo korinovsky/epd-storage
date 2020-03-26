@@ -4,6 +4,7 @@ import {AuthComponent} from './auth.component';
 import {AngularFireAuthModule} from "@angular/fire/auth";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
     declarations: [
@@ -16,7 +17,8 @@ import {MatIconModule} from "@angular/material/icon";
         CommonModule,
         AngularFireAuthModule,
         MatButtonModule,
-        MatIconModule
+        MatIconModule,
+        MatMenuModule
     ]
 })
 export class AuthModule {}
