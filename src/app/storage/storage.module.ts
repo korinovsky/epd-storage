@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {StorageComponent} from './storage.component';
 import {MatButtonModule} from "@angular/material/button";
 import {AngularFirestoreModule} from "@angular/fire/firestore";
-import {MatIconModule} from "@angular/material/icon";
+import {ItemModule} from "./item/item.module";
 
 @NgModule({
     declarations: [StorageComponent],
@@ -14,7 +14,7 @@ import {MatIconModule} from "@angular/material/icon";
         CommonModule,
         AngularFirestoreModule,
         MatButtonModule,
-        MatIconModule
+        ItemModule
     ]
 })
 export class StorageModule {

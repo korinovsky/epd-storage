@@ -1,0 +1,11 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{epd.date | date:'LLLL y' | titlecase}}</mat-card-title>
+        <button (click)="delete.emit()" *ngIf="isUserLoggedIn$ | async" mat-icon-button>
+            <mat-icon>clear</mat-icon>
+        </button>
+    </mat-card-header>
+    <mat-card-content>
+        {{epd.id}}
+    </mat-card-content>
+</mat-card>

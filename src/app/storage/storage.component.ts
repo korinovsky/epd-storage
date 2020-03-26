@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, TrackByFunction} from '@angular/core';
 import {Epd} from "./storage.model";
 import {Observable} from "rxjs";
 import {StorageService} from "./storage.service";
@@ -11,18 +11,19 @@ import {AuthService} from "../core/auth.service";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StorageComponent {
-    epds$: Observable<Epd[]>;
-    isUserLoggedIn$: Observable<boolean>;
+    readonly epds$ = this.storage.list();
+    readonly isUserLoggedIn$: Observable<boolean>;
 
     constructor(
         private storage: StorageService,
-        private auth: AuthService,
+        auth: AuthService,
     ) {
-        this.epds$ = storage.list();
-        this.isUserLoggedIn$ = this.auth.isUserLoggedIn$;
+        this.isUserLoggedIn$ = auth.isUserLoggedIn$;
     }
 
-    remove({id}: Epd) {
+    trackBy: TrackByFunction<Epd> = (_, {id}) => id;
+
+    delete({id}: Epd) {
         this.storage.delete(id);
     }
 
