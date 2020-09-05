@@ -1,22 +1,21 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {StorageComponent} from './storage.component';
+import {EpdsComponent} from './epds.component';
 import {MatButtonModule} from "@angular/material/button";
 import {AngularFirestoreModule} from "@angular/fire/firestore";
 import {ItemModule} from "./item/item.module";
-import {StorageRoutingModule} from "./storage-routing.module";
+import {EpdsRoutingModule} from "./epds-routing.module";
 
 @NgModule({
     declarations: [
-        StorageComponent
+        EpdsComponent
     ],
     imports: [
-        StorageRoutingModule,
+        EpdsRoutingModule,
         CommonModule,
         AngularFirestoreModule,
         MatButtonModule,
         ItemModule
     ]
 })
-export class StorageModule {
-}
+export class EpdsModule {}

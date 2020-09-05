@@ -1,21 +1,21 @@
 import {ChangeDetectionStrategy, Component, TrackByFunction} from '@angular/core';
-import {Epd} from "./storage.model";
+import {Epd} from "~models/epd.model";
 import {Observable} from "rxjs";
-import {StorageService} from "./storage.service";
-import {AuthService} from "../../core/auth.service";
+import {EpdService} from "~services/epd.service";
+import {AuthService} from "~core/auth.service";
 
 @Component({
     selector: 'app-storage',
-    templateUrl: './storage.component.html',
-    styleUrls: ['./storage.component.scss'],
+    templateUrl: './epds.component.html',
+    styleUrls: ['./epds.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StorageComponent {
+export class EpdsComponent {
     readonly epds$ = this.storage.list();
     readonly isUserLoggedIn$: Observable<boolean>;
 
     constructor(
-        private storage: StorageService,
+        private storage: EpdService,
         auth: AuthService,
     ) {
         this.isUserLoggedIn$ = auth.isUserLoggedIn$;

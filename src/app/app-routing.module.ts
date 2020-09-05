@@ -5,7 +5,11 @@ const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        loadChildren: () => import('./pages/storage/storage.module').then(m => m.StorageModule)
+        loadChildren: () => import('./pages/epds/epds.module').then(m => m.EpdsModule)
+    },
+    {
+        path: 'tariffs',
+        loadChildren: () => import('./pages/tariffs/tariffs.module').then(m => m.TariffsModule)
     }
 ];
 

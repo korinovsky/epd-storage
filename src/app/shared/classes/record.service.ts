@@ -2,15 +2,7 @@ import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firest
 import {map} from "rxjs/operators";
 import {fromPromise} from "rxjs/internal-compatibility";
 import {Observable} from "rxjs";
-
-export interface Record {
-    id: string;
-}
-
-const mapDocument = payload => ({
-    id: payload.id,
-    ...payload.data()
-});
+import {Record} from "~models/record.model";
 
 export abstract class AbstractRecordService<T extends Record> {
     private collection: AngularFirestoreCollection<T>;
@@ -40,7 +32,10 @@ export abstract class AbstractRecordService<T extends Record> {
 
     list(): Observable<T[]> {
         return this.collection.snapshotChanges().pipe(
-            map(actions => actions.map(({payload: {doc}}) => mapDocument(doc)))
+            map(actions => actions.map(({payload: {doc}}) => ({
+                id: doc.id,
+                ...doc.data()
+            })))
         );
     }
 }

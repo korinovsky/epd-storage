@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable} from "rxjs";
-import {AuthService} from "../../../core/auth.service";
-import {Epd} from "../storage.model";
+import {AuthService} from "~core/auth.service";
+import {Epd} from "~models/epd.model";
 
 @Component({
     selector: 'app-item',

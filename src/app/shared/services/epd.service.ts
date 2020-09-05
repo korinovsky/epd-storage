@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Epd} from "./storage.model";
-import {AbstractRecordService} from "../../shared/classes/record.service";
+import {Epd} from "~models/epd.model";
+import {AbstractRecordService} from "~classes/record.service";
 import {AngularFirestore} from "@angular/fire/firestore";
 import {Observable} from "rxjs";
 import {map, tap} from "rxjs/operators";
@@ -8,7 +8,7 @@ import {map, tap} from "rxjs/operators";
 @Injectable({
     providedIn: 'root'
 })
-export class StorageService extends AbstractRecordService<Epd> {
+export class EpdService extends AbstractRecordService<Epd> {
     constructor(afs: AngularFirestore) {
         super('epds', afs);
     }
