@@ -6,7 +6,8 @@ export interface Epd extends Record {
     waterDisposal: number;
 }
 
-export interface Tariff {
+export interface Tariff extends Record {
+    date: Date;
     waterSupply: number;
     waterDisposal: number;
 }

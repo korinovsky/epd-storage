@@ -28,9 +28,13 @@ export abstract class AbstractRecordService<T extends Record> {
 
     add(item: T): Observable<T> {
         const id = this.afs.createId();
-        const newItem: T = {id, ...item};
-        return fromPromise(this.collection.doc(id).set(newItem)).pipe(
-            map(() => newItem)
+        return this.update({id, ...item});
+    }
+
+    update(item: T): Observable<T> {
+        const {id, ...itemData} = item;
+        return fromPromise(this.collection.doc(id).set(itemData)).pipe(
+            map(() => item)
         );
     }
 
