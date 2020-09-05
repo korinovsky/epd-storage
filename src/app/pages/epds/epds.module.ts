@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {EpdsComponent} from './epds.component';
 import {MatButtonModule} from "@angular/material/button";
 import {AngularFirestoreModule} from "@angular/fire/firestore";
-import {ItemModule} from "./item/item.module";
+import {EpdsItemModule} from "./item/item.module";
 import {EpdsRoutingModule} from "./epds-routing.module";
 
 @NgModule({
@@ -15,7 +15,7 @@ import {EpdsRoutingModule} from "./epds-routing.module";
         CommonModule,
         AngularFirestoreModule,
         MatButtonModule,
-        ItemModule
+        EpdsItemModule
     ]
 })
 export class EpdsModule {}

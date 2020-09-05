@@ -27,7 +27,7 @@ export class EpdsComponent {
         this.storage.delete(id);
     }
 
-    addEpd() {
+    add() {
         this.storage.add();
     }
 }

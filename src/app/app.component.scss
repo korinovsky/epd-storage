@@ -9,3 +9,8 @@
 .spacer {
   flex: 1 1 auto;
 }
+
+mat-toolbar, mat-toolbar-row {
+  height: 56px;
+  min-height: 56px;
+}

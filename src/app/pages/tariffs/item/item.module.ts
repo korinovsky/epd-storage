@@ -1,21 +1,22 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {EpdsItemComponent} from './item.component';
+import {TariffsItemComponent} from './item.component';
+import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
-import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
-    declarations: [EpdsItemComponent],
+    declarations: [
+        TariffsItemComponent
+    ],
     exports: [
-        EpdsItemComponent
+        TariffsItemComponent
     ],
     imports: [
         CommonModule,
+        MatCardModule,
         MatIconModule,
-        MatButtonModule,
-        MatCardModule
+        MatButtonModule
     ]
 })
-export class EpdsItemModule {
-}
+export class TariffsItemModule {}

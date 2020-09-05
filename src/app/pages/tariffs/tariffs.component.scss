@@ -1,0 +1,18 @@
+@import "src/scss/variables";
+
+.items {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -$spacer / 2;
+
+  > * {
+    display: block;
+    width: 300px;
+    margin: $spacer / 2;
+  }
+}
+
+.buttons {
+  margin-top: $spacer;
+  text-align: center;
+}

@@ -1,16 +1,16 @@
 <div class="items">
-    <app-item
+    <app-epds-item
             (delete)="delete(epd)"
             *ngFor="let epd of epds$ | async; trackBy: trackBy"
             [epd]="epd"
-    ></app-item>
+    ></app-epds-item>
 </div>
 <div class="buttons">
     <button
-            (click)="addEpd()"
+            (click)="add()"
             *ngIf="isUserLoggedIn$ | async"
-            mat-flat-button
             color="primary"
+            mat-flat-button
     >
         Добавить
     </button>
