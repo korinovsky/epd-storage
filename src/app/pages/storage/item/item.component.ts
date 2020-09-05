@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable} from "rxjs";
-import {AuthService} from "../../core/auth.service";
+import {AuthService} from "../../../core/auth.service";
 import {Epd} from "../storage.model";
 
 @Component({

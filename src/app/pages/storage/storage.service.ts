@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Epd} from "./storage.model";
-import {AbstractRecordService} from "../classes/record.service";
+import {AbstractRecordService} from "../../shared/classes/record.service";
 import {AngularFirestore} from "@angular/fire/firestore";
 import {Observable} from "rxjs";
 import {map, tap} from "rxjs/operators";

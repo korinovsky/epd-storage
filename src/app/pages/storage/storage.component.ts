@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, TrackByFunction} from '@angular/core
 import {Epd} from "./storage.model";
 import {Observable} from "rxjs";
 import {StorageService} from "./storage.service";
-import {AuthService} from "../core/auth.service";
+import {AuthService} from "../../core/auth.service";
 
 @Component({
     selector: 'app-storage',

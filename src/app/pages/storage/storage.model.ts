@@ -1,4 +1,4 @@
-import {Record} from "../classes/record.service";
+import {Record} from "../../shared/classes/record.service";
 
 export interface Epd extends Record {
     date: Date;
