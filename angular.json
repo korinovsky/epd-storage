@@ -57,7 +57,8 @@
             "allowedCommonJsDependencies": [
               "zone.js/dist/zone-error",
               "firebase/app",
-              "@firebase/firestore"
+              "@firebase/firestore",
+              "@firebase/auth"
             ]
           },
           "configurations": {
