@@ -1,17 +1,19 @@
+<h1>Платежки</h1>
 <div class="items">
     <app-epds-item
-            (delete)="delete(epd)"
-            *ngFor="let epd of epds$ | async; trackBy: trackBy"
-            [epd]="epd"
+        (click)="details(epd)"
+        (edit)="edit(epd)"
+        *ngFor="let epd of epds$ | async; trackBy: trackBy"
+        [epd]="epd"
     ></app-epds-item>
 </div>
 <div class="buttons">
-    <button
-            (click)="add()"
-            *ngIf="isUserLoggedIn$ | async"
-            color="primary"
-            mat-flat-button
+    <a
+        *ngIf="isUserLoggedIn$ | async"
+        color="primary"
+        mat-flat-button
+        routerLink="create"
     >
         Добавить
-    </button>
+    </a>
 </div>

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Observable} from "rxjs";
-import {AuthService} from "~core/auth.service";
-import {Epd} from "~models/epd.model";
+import {Observable} from 'rxjs';
+import {AuthService} from '~core/auth.service';
+import {Epd} from '~models/epd.model';
 
 @Component({
     selector: 'app-epds-item',
@@ -10,12 +10,17 @@ import {Epd} from "~models/epd.model";
 })
 export class EpdsItemComponent {
     @Input() epd: Epd;
-    @Output() delete = new EventEmitter();
+    @Output() edit = new EventEmitter();
     readonly isUserLoggedIn$: Observable<boolean>;
 
     constructor(
         auth: AuthService,
     ) {
         this.isUserLoggedIn$ = auth.isUserLoggedIn$;
+    }
+
+    editClicked(event: MouseEvent): void {
+        event.preventDefault();
+        this.edit.emit();
     }
 }

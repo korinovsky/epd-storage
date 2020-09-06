@@ -58,7 +58,8 @@
               "zone.js/dist/zone-error",
               "firebase/app",
               "@firebase/firestore",
-              "@firebase/auth"
+              "@firebase/auth",
+              "moment/locale/ru"
             ]
           },
           "configurations": {
@@ -112,6 +113,17 @@
         "deploy": {
           "builder": "@angular/fire:deploy",
           "options": {}
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "tsconfig.app.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
         }
       }
     }

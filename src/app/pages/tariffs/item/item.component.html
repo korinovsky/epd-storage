@@ -1,8 +1,8 @@
 <mat-card>
     <mat-card-header>
-        <mat-card-title>{{tariff.date | date:'LLLL y' | titlecase}}</mat-card-title>
-        <button (click)="delete.emit()" *ngIf="isUserLoggedIn$ | async" mat-icon-button>
-            <mat-icon>clear</mat-icon>
+        <mat-card-title>{{tariff.date | moment:'MMMM YYYY' | titlecase}}</mat-card-title>
+        <button (click)="editClicked($event)" *ngIf="isUserLoggedIn$ | async" mat-icon-button>
+            <mat-icon>edit</mat-icon>
         </button>
     </mat-card-header>
     <mat-card-content>

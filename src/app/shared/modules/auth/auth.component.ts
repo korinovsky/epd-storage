@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AuthService, User} from "~core/auth.service";
+import {AuthService, User} from '~core/auth.service';
 
 @Component({
     selector: 'app-auth',
@@ -14,11 +14,11 @@ export class AuthComponent {
         this.auth.user$.subscribe(user => this.user = user);
     }
 
-    login() {
+    login(): void {
         this.auth.login();
     }
 
-    logout() {
+    logout(): void {
         this.auth.logout();
     }
 }

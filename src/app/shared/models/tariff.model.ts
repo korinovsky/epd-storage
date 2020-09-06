@@ -1,7 +1,8 @@
-import {Record} from "./record.model";
+import {Record} from './record.model';
+import {Moment} from 'moment';
 
 export interface Tariff extends Record {
-    date: Date;
+    date: Moment;
     waterSupply: number;
     waterDisposal: number;
 }

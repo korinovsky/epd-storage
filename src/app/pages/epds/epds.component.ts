@@ -1,8 +1,9 @@
 import {ChangeDetectionStrategy, Component, TrackByFunction} from '@angular/core';
-import {Epd} from "~models/epd.model";
-import {Observable} from "rxjs";
-import {EpdService} from "~services/epd.service";
-import {AuthService} from "~core/auth.service";
+import {Epd} from '~models/epd.model';
+import {Observable} from 'rxjs';
+import {EpdService} from '~services/epd.service';
+import {AuthService} from '~core/auth.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
     selector: 'app-storage',
@@ -11,11 +12,13 @@ import {AuthService} from "~core/auth.service";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EpdsComponent {
-    readonly epds$ = this.storage.list();
+    readonly epds$ = this.epdService.list();
     readonly isUserLoggedIn$: Observable<boolean>;
 
     constructor(
-        private storage: EpdService,
+        private epdService: EpdService,
+        private router: Router,
+        private route: ActivatedRoute,
         auth: AuthService,
     ) {
         this.isUserLoggedIn$ = auth.isUserLoggedIn$;
@@ -23,11 +26,11 @@ export class EpdsComponent {
 
     trackBy: TrackByFunction<Epd> = (_, {id}) => id;
 
-    delete({id}: Epd) {
-        this.storage.delete(id);
+    details({id}: Epd): void {
+        this.router.navigate([id], {relativeTo: this.route});
     }
 
-    add() {
-        this.storage.add();
+    edit({id}: Epd): void {
+        this.router.navigate(['edit', id], {relativeTo: this.route});
     }
 }

@@ -1,10 +1,14 @@
 import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from "@angular/router";
+import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
+        redirectTo: 'epds'
+    },
+    {
+        path: 'epds',
         loadChildren: () => import('./pages/epds/epds.module').then(m => m.EpdsModule)
     },
     {

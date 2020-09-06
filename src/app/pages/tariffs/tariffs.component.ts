@@ -1,8 +1,9 @@
 import {Component, TrackByFunction} from '@angular/core';
-import {Observable} from "rxjs";
-import {AuthService} from "~core/auth.service";
-import {TariffService} from "~services/tariff.service";
-import {Tariff} from "~models/tariff.model";
+import {Observable} from 'rxjs';
+import {AuthService} from '~core/auth.service';
+import {TariffService} from '~services/tariff.service';
+import {Tariff} from '~models/tariff.model';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
     selector: 'app-tariffs',
@@ -15,6 +16,8 @@ export class TariffsComponent {
 
     constructor(
         private tariffService: TariffService,
+        private router: Router,
+        private route: ActivatedRoute,
         auth: AuthService,
     ) {
         this.isUserLoggedIn$ = auth.isUserLoggedIn$;
@@ -22,11 +25,11 @@ export class TariffsComponent {
 
     trackBy: TrackByFunction<Tariff> = (_, {id}) => id;
 
-    delete({id}: Tariff) {
-        this.tariffService.delete(id);
+    details({id}: Tariff): void {
+        this.router.navigate([id], {relativeTo: this.route});
     }
 
-    add() {
-        this.tariffService.add();
+    edit({id}: Tariff): void {
+        this.router.navigate(['edit', id], {relativeTo: this.route});
     }
 }

@@ -1,17 +1,34 @@
-import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firestore";
-import {map} from "rxjs/operators";
-import {fromPromise} from "rxjs/internal-compatibility";
-import {Observable} from "rxjs";
-import {Record} from "~models/record.model";
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {map} from 'rxjs/operators';
+import {fromPromise} from 'rxjs/internal-compatibility';
+import {Observable} from 'rxjs';
+import {Record} from '~models/record.model';
+
+const mapDocument = doc => ({
+    id: doc.id,
+    ...doc.data()
+});
 
 export abstract class AbstractRecordService<T extends Record> {
     private collection: AngularFirestoreCollection<T>;
 
     protected constructor(
         path: string,
-        private afs: AngularFirestore
+        private angularFirestore: AngularFirestore
     ) {
-        this.collection = afs.collection<T>(path);
+        this.collection = angularFirestore.collection<T>(path);
+    }
+
+    get(id: string): Observable<T> {
+        return this.collection.doc(id).get().pipe(
+            map(mapDocument)
+        );
+    }
+
+    list(): Observable<T[]> {
+        return this.collection.snapshotChanges().pipe(
+            map(actions => actions.map(({payload: {doc}}) => mapDocument(doc)))
+        );
     }
 
     delete(id: string): Observable<void> {
@@ -19,7 +36,7 @@ export abstract class AbstractRecordService<T extends Record> {
     }
 
     add(item: T): Observable<T> {
-        const id = this.afs.createId();
+        const id = this.angularFirestore.createId();
         return this.update({id, ...item});
     }
 
@@ -27,15 +44,6 @@ export abstract class AbstractRecordService<T extends Record> {
         const {id, ...itemData} = item;
         return fromPromise(this.collection.doc(id).set(itemData)).pipe(
             map(() => item)
-        );
-    }
-
-    list(): Observable<T[]> {
-        return this.collection.snapshotChanges().pipe(
-            map(actions => actions.map(({payload: {doc}}) => ({
-                id: doc.id,
-                ...doc.data()
-            })))
         );
     }
 }

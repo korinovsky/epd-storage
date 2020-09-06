@@ -1,10 +1,12 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {EpdsComponent} from './epds.component';
-import {MatButtonModule} from "@angular/material/button";
-import {AngularFirestoreModule} from "@angular/fire/firestore";
-import {EpdsItemModule} from "./item/item.module";
-import {EpdsRoutingModule} from "./epds-routing.module";
+import {MatButtonModule} from '@angular/material/button';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
+import {EpdsItemModule} from './item/item.module';
+import {EpdsRoutingModule} from './epds-routing.module';
+import {EpdsDetailsModule} from '~app/pages/epds/details/details.module';
+import {EpdsFormModule} from '~app/pages/epds/form/form.module';
 
 @NgModule({
     declarations: [
@@ -15,7 +17,9 @@ import {EpdsRoutingModule} from "./epds-routing.module";
         CommonModule,
         AngularFirestoreModule,
         MatButtonModule,
-        EpdsItemModule
+        EpdsItemModule,
+        EpdsDetailsModule,
+        EpdsFormModule
     ]
 })
 export class EpdsModule {}

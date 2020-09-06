@@ -1,17 +1,19 @@
+<h1>Тарифы</h1>
 <div class="items">
     <app-tariffs-item
-            (delete)="delete(tariff)"
-            *ngFor="let tariff of tariffs$ | async; trackBy: trackBy"
-            [tariff]="tariff"
+        (click)="details(tariff)"
+        (edit)="edit(tariff)"
+        *ngFor="let tariff of tariffs$ | async; trackBy: trackBy"
+        [tariff]="tariff"
     ></app-tariffs-item>
 </div>
 <div class="buttons">
-    <button
-            (click)="add()"
-            *ngIf="isUserLoggedIn$ | async"
-            color="primary"
-            mat-flat-button
+    <a
+        *ngIf="isUserLoggedIn$ | async"
+        color="primary"
+        mat-flat-button
+        routerLink="create"
     >
         Добавить
-    </button>
+    </a>
 </div>

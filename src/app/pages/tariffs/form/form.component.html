@@ -1,0 +1,7 @@
+<ng-container *ngIf="tariff$ | async; else loader">
+    <app-month-picker [control]="date"></app-month-picker>
+</ng-container>
+<ng-template #loader>
+    <app-loader></app-loader>
+</ng-template>
+

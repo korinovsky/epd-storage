@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {auth, User as FirebaseUser} from 'firebase/app';
-import {FirebaseAuth} from "@angular/fire";
-import {AngularFireAuth} from "@angular/fire/auth";
-import {BehaviorSubject} from "rxjs";
-import {fromPromise} from "rxjs/internal-compatibility";
-import {tap} from "rxjs/operators";
+import {FirebaseAuth} from '@angular/fire';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {fromPromise} from 'rxjs/internal-compatibility';
+import {map, tap} from 'rxjs/operators';
 
 export type User = FirebaseUser;
 
@@ -16,13 +16,13 @@ export class AuthService {
     readonly isUserLoggedIn$ = new BehaviorSubject(false);
     private readonly auth: FirebaseAuth;
 
-    constructor(auth: AngularFireAuth) {
-        auth.user.subscribe(user => this.user = user);
-        this.auth = auth.auth;
+    constructor(angularFireAuth: AngularFireAuth) {
+        angularFireAuth.user.subscribe(user => this.user = user);
+        this.auth = angularFireAuth.auth;
         this.user$.subscribe(user => this.isUserLoggedIn$.next(!!user));
     }
 
-    get user() {
+    get user(): User {
         return this.user$.value;
     }
 
@@ -30,13 +30,13 @@ export class AuthService {
         this.user$.next(user);
     }
 
-    login() {
+    login(): Observable<User> {
         return fromPromise(this.auth.signInWithPopup(new auth.GoogleAuthProvider())).pipe(
-            tap(user => this.user = user.user)
+            map(user => this.user = user.user)
         );
     }
 
-    logout() {
+    logout(): Observable<void> {
         return fromPromise(this.auth.signOut()).pipe(
             tap(() => this.user = null)
         );
