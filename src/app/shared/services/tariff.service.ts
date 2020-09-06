@@ -28,10 +28,4 @@ export class TariffService extends AbstractRecordService<Tariff> {
             map(tariffs => tariffs.sort((a, b) => a.date < b.date ? -1 : 0))
         );
     }
-
-    add(): Observable<Tariff> {
-        return super.add({
-            date: moment()
-        } as Tariff);
-    }
 }

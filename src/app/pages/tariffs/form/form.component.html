@@ -1,6 +1,36 @@
-<ng-container *ngIf="tariff$ | async; else loader">
-    <app-month-picker [control]="date"></app-month-picker>
-</ng-container>
+<form (ngSubmit)="submit()" *ngIf="tariff$ | async; else loader" autocomplete="off" novalidate>
+    <h1>
+        {{isNew ? 'Новый тариф' : 'Тариф на ' + (date.value | moment:'MMMM YYYY')}}
+        <button
+            (click)="delete()"
+            *ngIf="!isNew"
+            [disabled]="form.disabled"
+            color="warn"
+            mat-icon-button
+            type="button"
+        >
+            <mat-icon>delete_forever</mat-icon>
+        </button>
+    </h1>
+    <div class="row">
+        <app-month-input [control]="date"></app-month-input>
+    </div>
+    <div class="row">
+        <app-number-input
+            [control]="waterSupply"
+            label="Водоснабжение"
+        ></app-number-input>
+        <app-number-input
+            [control]="waterDisposal"
+            label="Водоотведение"
+        ></app-number-input>
+    </div>
+    <div>
+        <button [disabled]="form.disabled" color="primary" mat-flat-button type="submit">
+            {{isNew ? 'Добавить' : 'Сохранить'}}
+        </button>
+    </div>
+</form>
 <ng-template #loader>
     <app-loader></app-loader>
 </ng-template>

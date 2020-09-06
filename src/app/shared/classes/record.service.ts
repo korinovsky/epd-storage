@@ -1,8 +1,9 @@
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
-import {map} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {fromPromise} from 'rxjs/internal-compatibility';
-import {Observable} from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 import {Record} from '~models/record.model';
+import {isMoment} from 'moment';
 
 const mapDocument = doc => ({
     id: doc.id,
@@ -21,7 +22,7 @@ export abstract class AbstractRecordService<T extends Record> {
 
     get(id: string): Observable<T> {
         return this.collection.doc(id).get().pipe(
-            map(mapDocument)
+            switchMap(doc => doc.exists ? of(mapDocument(doc)) : throwError('Not found'))
         );
     }
 
@@ -42,6 +43,11 @@ export abstract class AbstractRecordService<T extends Record> {
 
     update(item: T): Observable<T> {
         const {id, ...itemData} = item;
+        Object.keys(itemData).forEach(key => {
+            if (isMoment(itemData[key])) {
+                itemData[key] = itemData[key].toDate();
+            }
+        });
         return fromPromise(this.collection.doc(id).set(itemData)).pipe(
             map(() => item)
         );

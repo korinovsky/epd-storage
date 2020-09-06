@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {MonthPickerComponent} from './month-picker.component';
+import {MonthInputComponent} from './month-input.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -21,10 +21,10 @@ const monthFormat = {
 
 @NgModule({
     declarations: [
-        MonthPickerComponent
+        MonthInputComponent
     ],
     exports: [
-        MonthPickerComponent
+        MonthInputComponent
     ],
     imports: [
         MatDatepickerModule,
@@ -43,4 +43,4 @@ const monthFormat = {
         },
     ],
 })
-export class MonthPickerModule {}
+export class MonthInputModule {}

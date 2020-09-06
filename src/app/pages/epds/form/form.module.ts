@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {EpdsFormComponent} from './form.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {LoaderModule} from '~modules/loader/loader.module';
-import {MonthPickerModule} from '~modules/month-picker/month-picker.module';
+import {MonthInputModule} from '~modules/month-picker/month-input.module';
 
 @NgModule({
     declarations: [
@@ -16,7 +16,7 @@ import {MonthPickerModule} from '~modules/month-picker/month-picker.module';
         CommonModule,
         ReactiveFormsModule,
         LoaderModule,
-        MonthPickerModule,
+        MonthInputModule,
     ]
 })
 export class EpdsFormModule {}

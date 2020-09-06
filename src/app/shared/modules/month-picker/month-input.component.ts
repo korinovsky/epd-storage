@@ -1,0 +1,27 @@
+import {Component, Input} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {MatDatepicker} from '@angular/material/datepicker';
+import {Moment} from 'moment';
+
+@Component({
+    selector: 'app-month-input',
+    templateUrl: './month-input.component.html',
+    styleUrls: ['./month-input.component.scss']
+})
+export class MonthInputComponent {
+    @Input() control: FormControl;
+    @Input() label = 'Месяц';
+
+    chosenYearHandler(current: Moment): void {
+        const value = (this.control.value as Moment).clone();
+        value.year(current.year());
+        this.control.setValue(value);
+    }
+
+    chosenMonthHandler(current: Moment, datepicker: MatDatepicker<any>): void {
+        const value = (this.control.value as Moment).clone();
+        value.month(current.month());
+        this.control.setValue(value);
+        datepicker.close();
+    }
+}

@@ -1,5 +1,5 @@
 <ng-container *ngIf="epd$ | async; else loader">
-    <app-month-picker [control]="date"></app-month-picker>
+    <app-month-input [control]="date"></app-month-input>
 </ng-container>
 <ng-template #loader>
     <app-loader></app-loader>

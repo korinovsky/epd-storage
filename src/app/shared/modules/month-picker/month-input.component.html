@@ -1,6 +1,10 @@
 <mat-form-field appearance="fill">
-    <mat-label>Месяц</mat-label>
-    <input [formControl]="control" [matDatepicker]="dp" matInput />
+    <mat-label>{{label}}</mat-label>
+    <input
+        [formControl]="control"
+        [matDatepicker]="dp"
+        matInput
+    >
     <mat-datepicker-toggle [for]="dp" matSuffix></mat-datepicker-toggle>
     <mat-datepicker
         #dp
