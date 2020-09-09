@@ -15,6 +15,6 @@ export class TariffsDetailsComponent {
         roure: ActivatedRoute,
         tariffService: TariffService,
     ) {
-        this.tariff$ = tariffService.get(roure.snapshot.params.id);
+        this.tariff$ = tariffService.get$(roure.snapshot.params.id);
     }
 }

@@ -12,7 +12,7 @@ import {ActivatedRoute, Router} from '@angular/router';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EpdsComponent {
-    readonly epds$ = this.epdService.list();
+    readonly epds$ = this.epdService.list$();
     readonly isUserLoggedIn$: Observable<boolean>;
 
     constructor(

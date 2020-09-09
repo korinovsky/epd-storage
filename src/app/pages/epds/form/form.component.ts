@@ -28,7 +28,7 @@ export class EpdsFormComponent {
     ) {
         this.id = roure.snapshot.params.id;
         this.epd$ = (this.isNew
-            ? epdService.list().pipe(
+            ? epdService.list$().pipe(
                 map(epds => {
                     const {length} = epds;
                     const prevEpd = length > 0 ? epds[length - 1] : {} as Epd;
@@ -37,7 +37,7 @@ export class EpdsFormComponent {
                     }) as Epd;
                 })
             )
-            : epdService.get(this.id)
+            : epdService.get$(this.id)
         ).pipe(
             tap(epd => this.form.reset(epd)),
         );

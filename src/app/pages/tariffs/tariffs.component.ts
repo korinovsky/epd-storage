@@ -11,7 +11,7 @@ import {ActivatedRoute, Router} from '@angular/router';
     styleUrls: ['./tariffs.component.scss']
 })
 export class TariffsComponent {
-    readonly tariffs$ = this.tariffService.list();
+    readonly tariffs$ = this.tariffService.list$();
     readonly isUserLoggedIn$: Observable<boolean>;
 
     constructor(

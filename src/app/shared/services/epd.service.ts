@@ -16,21 +16,21 @@ export class EpdService extends AbstractRecordService<Epd> {
         super('epds', afs);
     }
 
-    get(id: string): Observable<Epd> {
-        return super.get(id).pipe(
+    get$(id: string): Observable<Epd> {
+        return super.get$(id).pipe(
             tap(transformEpd)
         );
     }
 
-    list(): Observable<Epd[]> {
-        return super.list().pipe(
+    list$(): Observable<Epd[]> {
+        return super.list$().pipe(
             tap(epds => epds.forEach(transformEpd)),
             map(epds => epds.sort((a, b) => a.date < b.date ? -1 : 0))
         );
     }
 
-    add(): Observable<Epd> {
-        return super.add({
+    add$(): Observable<Epd> {
+        return super.add$({
             date: moment()
         } as Epd);
     }

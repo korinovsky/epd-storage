@@ -15,6 +15,6 @@ export class EpdsDetailsComponent {
         roure: ActivatedRoute,
         epdService: EpdService,
     ) {
-        this.epd$ = epdService.get(roure.snapshot.params.id);
+        this.epd$ = epdService.get$(roure.snapshot.params.id);
     }
 }

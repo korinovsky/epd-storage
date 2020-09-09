@@ -20,28 +20,28 @@ export abstract class AbstractRecordService<T extends Record> {
         this.collection = angularFirestore.collection<T>(path);
     }
 
-    get(id: string): Observable<T> {
+    get$(id: string): Observable<T> {
         return this.collection.doc(id).get().pipe(
             switchMap(doc => doc.exists ? of(mapDocument(doc)) : throwError('Not found'))
         );
     }
 
-    list(): Observable<T[]> {
+    list$(): Observable<T[]> {
         return this.collection.snapshotChanges().pipe(
             map(actions => actions.map(({payload: {doc}}) => mapDocument(doc)))
         );
     }
 
-    delete(id: string): Observable<void> {
+    delete$(id: string): Observable<void> {
         return fromPromise(this.collection.doc(id).delete());
     }
 
-    add(item: T): Observable<T> {
+    add$(item: T): Observable<T> {
         const id = this.angularFirestore.createId();
-        return this.update({id, ...item});
+        return this.update$({id, ...item});
     }
 
-    update(item: T): Observable<T> {
+    update$(item: T): Observable<T> {
         const {id, ...itemData} = item;
         Object.keys(itemData).forEach(key => {
             if (isMoment(itemData[key])) {

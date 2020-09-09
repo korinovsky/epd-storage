@@ -16,14 +16,14 @@ export class TariffService extends AbstractRecordService<Tariff> {
         super('tariffs', afs);
     }
 
-    get(id: string): Observable<Tariff> {
-        return super.get(id).pipe(
+    get$(id: string): Observable<Tariff> {
+        return super.get$(id).pipe(
             tap(transformTariff)
         );
     }
 
-    list(): Observable<Tariff[]> {
-        return super.list().pipe(
+    list$(): Observable<Tariff[]> {
+        return super.list$().pipe(
             tap(tariffs => tariffs.forEach(transformTariff)),
             map(tariffs => tariffs.sort((a, b) => a.date < b.date ? -1 : 0))
         );

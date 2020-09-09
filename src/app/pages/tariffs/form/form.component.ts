@@ -32,7 +32,7 @@ export class TariffsFormComponent {
         this.id = roure.snapshot.params.id;
         this.tariff$ = (
             this.isNew
-                ? tariffService.list().pipe(
+                ? tariffService.list$().pipe(
                 take(1),
                 map(tariffs => {
                     const {length} = tariffs;
@@ -42,7 +42,7 @@ export class TariffsFormComponent {
                     }) as Tariff;
                 })
                 )
-                : tariffService.get(this.id)
+                : tariffService.get$(this.id)
         ).pipe(
             tap(tariff => this.form.reset(tariff)),
             catchError(error => {
@@ -75,8 +75,8 @@ export class TariffsFormComponent {
         this.form.disable();
         (
             this.isNew
-                ? this.tariffService.add(this.form.value)
-                : this.tariffService.update({
+                ? this.tariffService.add$(this.form.value)
+                : this.tariffService.update$({
                     id: this.id,
                     ...this.form.value
                 })
@@ -87,7 +87,7 @@ export class TariffsFormComponent {
 
     delete(): void {
         this.form.disable();
-        this.tariffService.delete(this.id).pipe(
+        this.tariffService.delete$(this.id).pipe(
             finalize(() => this.form.enable()),
         ).subscribe(this.navigateToList);
     }
