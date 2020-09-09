@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AuthService, User} from '~core/auth.service';
+import {AuthService, AuthUser} from '~core/auth.service';
 
 @Component({
     selector: 'app-auth',
@@ -7,7 +7,7 @@ import {AuthService, User} from '~core/auth.service';
     styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent {
-    user: User;
+    user: AuthUser;
     constructor(
         private auth: AuthService
     ) {
@@ -15,10 +15,10 @@ export class AuthComponent {
     }
 
     login(): void {
-        this.auth.login();
+        this.auth.login$();
     }
 
     logout(): void {
-        this.auth.logout();
+        this.auth.logout$();
     }
 }

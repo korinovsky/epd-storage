@@ -12,8 +12,8 @@ const transformEpd = epd => epd.date = moment(epd.date.toDate());
     providedIn: 'root'
 })
 export class EpdService extends AbstractRecordService<Epd> {
-    constructor(afs: AngularFirestore) {
-        super('epds', afs);
+    constructor(firestore: AngularFirestore) {
+        super('epds', firestore);
     }
 
     get$(id: string): Observable<Epd> {

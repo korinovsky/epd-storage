@@ -4,6 +4,7 @@ import {fromPromise} from 'rxjs/internal-compatibility';
 import {Observable, of, throwError} from 'rxjs';
 import {Record} from '~models/record.model';
 import {isMoment} from 'moment';
+import {Error} from '~models/error.model';
 
 const mapDocument = doc => ({
     id: doc.id,
@@ -22,7 +23,7 @@ export abstract class AbstractRecordService<T extends Record> {
 
     get$(id: string): Observable<T> {
         return this.collection.doc(id).get().pipe(
-            switchMap(doc => doc.exists ? of(mapDocument(doc)) : throwError('Not found'))
+            switchMap(doc => doc.exists ? of(mapDocument(doc)) : throwError(Error.NotFound))
         );
     }
 

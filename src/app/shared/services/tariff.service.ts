@@ -12,8 +12,8 @@ const transformTariff = tariff => tariff.date = moment(tariff.date.toDate());
     providedIn: 'root'
 })
 export class TariffService extends AbstractRecordService<Tariff> {
-    constructor(afs: AngularFirestore) {
-        super('tariffs', afs);
+    constructor(firestore: AngularFirestore) {
+        super('tariffs', firestore);
     }
 
     get$(id: string): Observable<Tariff> {
