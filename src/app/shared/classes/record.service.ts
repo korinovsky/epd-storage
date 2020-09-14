@@ -1,7 +1,7 @@
-import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection, DocumentReference} from '@angular/fire/firestore';
 import {map, switchMap} from 'rxjs/operators';
 import {fromPromise} from 'rxjs/internal-compatibility';
-import {Observable, of, throwError} from 'rxjs';
+import {defer, Observable, of, throwError} from 'rxjs';
 import {Record} from '~models/record.model';
 import {isMoment} from 'moment';
 import {Error} from '~models/error.model';
@@ -27,6 +27,10 @@ export abstract class AbstractRecordService<T extends Record> {
         );
     }
 
+    getDocumentRef$(id: string): DocumentReference {
+        return this.collection.doc<T>(id).ref;
+    }
+
     list$(): Observable<T[]> {
         return this.collection.snapshotChanges().pipe(
             map(actions => actions.map(({payload: {doc}}) => mapDocument(doc)))
@@ -34,23 +38,28 @@ export abstract class AbstractRecordService<T extends Record> {
     }
 
     delete$(id: string): Observable<void> {
-        return fromPromise(this.collection.doc(id).delete());
+        return defer(() => fromPromise(this.collection.doc(id).delete()));
     }
 
     add$(item: T): Observable<T> {
-        const id = this.angularFirestore.createId();
-        return this.update$({id, ...item});
+        return defer(() => {
+            const id = this.angularFirestore.createId();
+            return this.update$({id, ...item});
+        });
     }
 
     update$(item: T): Observable<T> {
-        const {id, ...itemData} = item;
-        Object.keys(itemData).forEach(key => {
-            if (isMoment(itemData[key])) {
-                itemData[key] = itemData[key].toDate();
-            }
+        return defer(() => {
+            const {id, ...itemData} = item;
+            Object.keys(itemData).forEach(key => {
+                if (isMoment(itemData[key])) {
+                    itemData[key] = itemData[key].toDate();
+                }
+            });
+            console.log(item, id, itemData);
+            return fromPromise(this.collection.doc(id).set(itemData)).pipe(
+                map(() => item)
+            );
         });
-        return fromPromise(this.collection.doc(id).set(itemData)).pipe(
-            map(() => item)
-        );
     }
 }
