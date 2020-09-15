@@ -6,10 +6,9 @@ import {AuthModule} from '~modules/auth/auth.module';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {AppRoutingModule} from './app-routing.module';
 import {CoreModule} from '~core/core.module';
-import {MatButtonModule} from '@angular/material/button';
 import {AppService} from '~services/app.service';
-import {MatDialogModule} from '@angular/material/dialog';
 import {AddressDialogModule} from '~modules/address-dialog/address-dialog.module';
+import {AddressModule} from '~modules/address/address.module';
 
 @NgModule({
     declarations: [
@@ -22,9 +21,8 @@ import {AddressDialogModule} from '~modules/address-dialog/address-dialog.module
         CoreModule,
         AuthModule,
         MatToolbarModule,
-        MatButtonModule,
-        MatDialogModule,
-        AddressDialogModule
+        AddressDialogModule,
+        AddressModule
     ],
     providers: [
         AppService

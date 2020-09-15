@@ -1,0 +1,10 @@
+<ng-container *ngIf="address$ | async as address">
+    <div [matMenuTriggerFor]="menu" class="address">{{address.name}}</div>
+    <a mat-button routerLink="epds">Платежки</a>
+    <a mat-button routerLink="tariffs">Тарифы</a>
+</ng-container>
+<mat-menu #menu="matMenu">
+    <button (click)="edit()" mat-menu-item>Изменить</button>
+    <button *ngFor="let address of addresses" (click)="select()" mat-menu-item>{{address.name}}</button>
+    <button (click)="add()" mat-menu-item>Добавить</button>
+</mat-menu>

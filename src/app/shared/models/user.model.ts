@@ -3,4 +3,5 @@ import {DocumentReference} from '@angular/fire/firestore';
 
 export interface User extends Record {
     addresses: DocumentReference[];
+    currentAddress?: number;
 }

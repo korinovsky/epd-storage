@@ -21,6 +21,10 @@ export abstract class AbstractRecordService<T extends Record> {
         this.collection = angularFirestore.collection<T>(path);
     }
 
+    getByRef$(ref: DocumentReference): Observable<T> {
+        return this.get$(ref.id);
+    }
+
     get$(id: string): Observable<T> {
         return this.collection.doc(id).get().pipe(
             switchMap(doc => doc.exists ? of(mapDocument(doc)) : throwError(Error.NotFound))
