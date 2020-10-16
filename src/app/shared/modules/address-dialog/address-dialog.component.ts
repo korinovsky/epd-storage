@@ -80,11 +80,12 @@ export class AddressDialogComponent implements OnInit {
                     const {addresses = [], ...rest} = this.user;
                     const user = {
                         ...rest,
+                        currentAddress: addresses.length,
                         addresses: [
                             ...addresses,
                             this.addressService.getDocumentRef$(address.id)
                         ]
-                    };
+                    } as User;
                     return this.userService.update$(user).pipe(
                         map(() => {
                             this.user.addresses = user.addresses;

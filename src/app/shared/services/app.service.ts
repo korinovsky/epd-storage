@@ -86,7 +86,13 @@ export class AppService {
     }
 
     addAddress(): void {
-        this.addAddress$(this.user).subscribe();
+        const {user} = this;
+        this.addAddress$(user).subscribe(
+            address => {
+                this.user = user;
+                this.address = address;
+            }
+        );
     }
 
     private addAddress$(user: User, disableClose = false): Observable<Address> {
