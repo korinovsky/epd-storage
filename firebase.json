@@ -4,21 +4,6 @@
       "target": "epd-storage",
       "public": "dist/epd-storage",
       "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "rewrites": [
-        {
-          "source": "**",
-          "destination": "/index.html"
-        }
-      ]
-    },
-    {
-      "target": "epd-storage",
-      "public": "dist/epd-storage",
-      "ignore": [
         "**/.*"
       ],
       "headers": [
