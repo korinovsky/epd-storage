@@ -13,13 +13,13 @@ export class MonthInputComponent {
     @Input() label = 'Месяц';
 
     chosenYearHandler(current: Moment): void {
-        const value = (this.control.value as Moment).clone();
+        const value = (this.control.value as Moment).clone().startOf('month');
         value.year(current.year());
         this.control.setValue(value);
     }
 
     chosenMonthHandler(current: Moment, datepicker: MatDatepicker<any>): void {
-        const value = (this.control.value as Moment).clone();
+        const value = (this.control.value as Moment).clone().startOf('month');
         value.month(current.month());
         this.control.setValue(value);
         datepicker.close();

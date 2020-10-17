@@ -12,6 +12,16 @@
             >
             <mat-error *ngIf="name.invalid">{{nameErrorMessage}}</mat-error>
         </mat-form-field>
+        <app-number-input
+            [control]="area"
+            [decimal]="1"
+            label="Площадь помещения"
+        ></app-number-input>
+        <app-number-input
+            [control]="totalArea"
+            [decimal]="1"
+            label="Общая площадь"
+        ></app-number-input>
     </mat-dialog-content>
     <mat-dialog-actions>
         <button [disabled]="form.disabled" color="primary" mat-flat-button type="submit">

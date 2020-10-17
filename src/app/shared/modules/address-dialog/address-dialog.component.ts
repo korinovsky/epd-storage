@@ -21,7 +21,9 @@ export interface DialogData {
 })
 export class AddressDialogComponent implements OnInit {
     form = this.fb.group({
-        name: [null, Validators.required]
+        name: [null, Validators.required],
+        area: [null, Validators.required],
+        totalArea: [null, Validators.required]
     });
 
     constructor(
@@ -42,6 +44,14 @@ export class AddressDialogComponent implements OnInit {
 
     get name(): FormControl {
         return this.form.get('name') as FormControl;
+    }
+
+    get area(): FormControl {
+        return this.form.get('area') as FormControl;
+    }
+
+    get totalArea(): FormControl {
+        return this.form.get('totalArea') as FormControl;
     }
 
     get nameErrorMessage(): string {

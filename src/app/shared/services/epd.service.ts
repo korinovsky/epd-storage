@@ -49,10 +49,4 @@ export class EpdService extends AbstractRecordService<Epd> {
     list$(): Observable<Epd[]> {
         return this.listSubject$;
     }
-
-    add$(): Observable<Epd> {
-        return super.add$({
-            date: moment()
-        } as Epd);
-    }
 }

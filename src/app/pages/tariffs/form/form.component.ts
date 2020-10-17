@@ -4,7 +4,7 @@ import {Tariff} from '~models/tariff.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TariffService} from '~services/tariff.service';
 import {catchError, finalize, map, take, tap} from 'rxjs/operators';
-import {FormBuilder, FormControl, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, Validators} from '@angular/forms';
 import moment from 'moment';
 import autobind from 'autobind-decorator';
 
@@ -18,29 +18,36 @@ export class TariffsFormComponent {
     disabled = false;
     form = this.formBuilder.group({
         date: [null, Validators.required],
+        maintenance: [null, Validators.required],
         waterSupply: [null, Validators.required],
         waterDisposal: [null, Validators.required],
+        heatSupply: [null, Validators.required],
+        powerSupply: this.formBuilder.array([
+            [null, Validators.required],
+            [null, Validators.required],
+            [null, Validators.required]
+        ]),
     });
-    private id: string;
+    private readonly id: string;
 
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
         private tariffService: TariffService,
-        private roure: ActivatedRoute,
+        route: ActivatedRoute,
     ) {
-        this.id = roure.snapshot.params.id;
+        this.id = route.snapshot.params.id;
         this.tariff$ = (
             this.isNew
                 ? tariffService.list$().pipe(
-                take(1),
-                map(tariffs => {
-                    const {length} = tariffs;
-                    const prevTariff = length > 0 ? tariffs[length - 1] : {} as Tariff;
-                    return Object.assign({}, prevTariff, {
-                        date: moment()
-                    }) as Tariff;
-                })
+                    take(1),
+                    map(tariffs => {
+                        const {length} = tariffs;
+                        const prevTariff = length > 0 ? tariffs[length - 1] : {} as Tariff;
+                        return Object.assign({}, prevTariff, {
+                            date: moment()
+                        }) as Tariff;
+                    })
                 )
                 : tariffService.get$(this.id)
         ).pipe(
@@ -60,12 +67,24 @@ export class TariffsFormComponent {
         return this.form.get('date') as FormControl;
     }
 
+    get maintenance(): FormControl {
+        return this.form.get('maintenance') as FormControl;
+    }
+
     get waterSupply(): FormControl {
         return this.form.get('waterSupply') as FormControl;
     }
 
     get waterDisposal(): FormControl {
         return this.form.get('waterDisposal') as FormControl;
+    }
+
+    get heatSupply(): FormControl {
+        return this.form.get('heatSupply') as FormControl;
+    }
+
+    get powerSupply(): FormControl[] {
+        return (this.form.get('powerSupply') as FormArray).controls as FormControl[];
     }
 
     submit(): void {

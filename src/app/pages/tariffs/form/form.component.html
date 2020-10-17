@@ -17,12 +17,38 @@
     </div>
     <div class="row">
         <app-number-input
+            [control]="maintenance"
+            label="Содержание и текущий ремонт"
+        ></app-number-input>
+    </div>
+    <div class="row">
+        <app-number-input
             [control]="waterSupply"
             label="Водоснабжение"
         ></app-number-input>
         <app-number-input
             [control]="waterDisposal"
             label="Водоотведение"
+        ></app-number-input>
+    </div>
+    <div class="row">
+        <app-number-input
+            [control]="heatSupply"
+            label="Отопление"
+        ></app-number-input>
+    </div>
+    <div class="row">
+        <app-number-input
+            [control]="powerSupply[0]"
+            label="Электроснабжение дн. начисление"
+        ></app-number-input>
+        <app-number-input
+            [control]="powerSupply[1]"
+            label="Электроснабжение нч. начисление"
+        ></app-number-input>
+        <app-number-input
+            [control]="powerSupply[2]"
+            label="Электроснабжение пик. начисление"
         ></app-number-input>
     </div>
     <div>
