@@ -9,7 +9,7 @@ import {Observable} from 'rxjs';
 })
 export class UserService extends AbstractRecordService<User> {
     constructor(firestore: AngularFirestore) {
-        super('users', firestore);
+        super(firestore, 'users');
     }
 
     add$(item: User): Observable<User> {

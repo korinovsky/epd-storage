@@ -1,10 +1,12 @@
 import {AngularFirestore, AngularFirestoreCollection, DocumentReference} from '@angular/fire/firestore';
-import {map, switchMap} from 'rxjs/operators';
+import {catchError, map, switchMap} from 'rxjs/operators';
 import {fromPromise} from 'rxjs/internal-compatibility';
 import {defer, Observable, of, throwError} from 'rxjs';
 import {Record} from '~models/record.model';
 import {isMoment} from 'moment';
 import {Error} from '~models/error.model';
+import {FirebaseError} from 'firebase';
+import autobind from 'autobind-decorator';
 
 const mapDocument = doc => ({
     id: doc.id,
@@ -14,11 +16,15 @@ const mapDocument = doc => ({
 export abstract class AbstractRecordService<T extends Record> {
     private collection: AngularFirestoreCollection<T>;
 
+    set path(value: string) {
+        this.collection = value ? this.angularFirestore.collection<T>(value) : null;
+    }
+
     protected constructor(
-        path: string,
-        private angularFirestore: AngularFirestore
+        private angularFirestore: AngularFirestore,
+        path?: string
     ) {
-        this.collection = angularFirestore.collection<T>(path);
+        this.path = path;
     }
 
     getByRef$(ref: DocumentReference): Observable<T> {
@@ -27,6 +33,7 @@ export abstract class AbstractRecordService<T extends Record> {
 
     get$(id: string): Observable<T> {
         return this.collection.doc(id).get().pipe(
+            catchError(this.handleError$),
             switchMap(doc => doc.exists ? of(mapDocument(doc)) : throwError(Error.NotFound))
         );
     }
@@ -36,7 +43,8 @@ export abstract class AbstractRecordService<T extends Record> {
     }
 
     list$(): Observable<T[]> {
-        return this.collection.snapshotChanges().pipe(
+        return this.collection?.snapshotChanges().pipe(
+            catchError(this.handleError$),
             map(actions => actions.map(({payload: {doc}}) => mapDocument(doc)))
         );
     }
@@ -65,5 +73,11 @@ export abstract class AbstractRecordService<T extends Record> {
                 map(() => item)
             );
         });
+    }
+
+    @autobind
+    private handleError$(error: FirebaseError): Observable<never> {
+        console.error(error);
+        return throwError(error);
     }
 }

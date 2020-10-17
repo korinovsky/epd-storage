@@ -57,7 +57,7 @@
             "allowedCommonJsDependencies": [
               "zone.js/dist/zone-error",
               "firebase/app",
-              "@firebase/firestore",
+              "@angular/fire/firestore",
               "@firebase/auth",
               "moment/locale/ru"
             ]

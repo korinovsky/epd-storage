@@ -8,6 +8,6 @@ import {Address} from '~models/address.model';
 })
 export class AddressService extends AbstractRecordService<Address> {
     constructor(firestore: AngularFirestore) {
-        super('addresses', firestore);
+        super(firestore, 'addresses');
     }
 }

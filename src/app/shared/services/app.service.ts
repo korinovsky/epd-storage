@@ -4,7 +4,7 @@ import {UserService} from '~services/user.service';
 import {catchError, filter, map, switchMap, tap} from 'rxjs/operators';
 import {Error} from '~models/error.model';
 import {User} from '~models/user.model';
-import {BehaviorSubject, iif, Observable, of, throwError} from 'rxjs';
+import {BehaviorSubject, defer, iif, Observable, of, throwError} from 'rxjs';
 import _identity from 'lodash/identity';
 import {MatDialog} from '@angular/material/dialog';
 import {AddressDialogComponent, DialogData} from '~modules/address-dialog/address-dialog.component';
@@ -77,9 +77,9 @@ export class AppService {
                 return iif(
                     () => !addressRef,
                     of({user}),
-                    this.addressService.getByRef$(addressRef).pipe(
+                    defer(() => this.addressService.getByRef$(addressRef).pipe(
                         map(address => ({user, address}))
-                    )
+                    ))
                 );
             })
         );
