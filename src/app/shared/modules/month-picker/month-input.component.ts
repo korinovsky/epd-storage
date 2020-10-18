@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {MatDatepicker} from '@angular/material/datepicker';
 import {Moment} from 'moment';
+import {requiredErrorMessage} from '~app/shared/constants/messages.constants';
 
 @Component({
     selector: 'app-month-input',
@@ -29,7 +30,7 @@ export class MonthInputComponent {
         const error = Object.keys(this.control.errors)[0];
         switch (error) {
             case 'required': {
-                return 'Поле обязательно для заполнения';
+                return requiredErrorMessage;
             }
         }
         return error;
