@@ -4,7 +4,7 @@ import {Epd} from '~models/epd.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EpdService} from '~services/epd.service';
 import {catchError, finalize, map, take, tap} from 'rxjs/operators';
-import {FormArray, FormBuilder, FormControl, Validators} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormControl, ValidationErrors, Validators} from '@angular/forms';
 import moment from 'moment';
 import autobind from 'autobind-decorator';
 import _identity from 'lodash/identity';
@@ -33,13 +33,14 @@ export class EpdsFormComponent {
             [null, Validators.required]
         ]),
         powerSupplyCommon: this.formBuilder.array([
-            [null, Validators.required],
-            [null, Validators.required],
-            [null, Validators.required]
+            [null, this.powerSupplyCommonValidator],
+            [null, this.powerSupplyCommonValidator],
+            [null, this.powerSupplyCommonValidator]
         ]),
         otherPayments: this.formBuilder.array([[null]]),
         receiptTotalPayment: [null, Validators.required],
     });
+    private powerSupplyCommonRequired = false;
     private readonly id: string;
 
     constructor(
@@ -49,7 +50,15 @@ export class EpdsFormComponent {
         route: ActivatedRoute,
     ) {
         this.id = route.snapshot.params.id;
-        this.epd$ = (this.isNew
+        this.powerSupplyCommonFormArray.valueChanges.subscribe(values => {
+            const required = values.some(value => value !== null);
+            if (this.powerSupplyCommonRequired !== required) {
+                this.powerSupplyCommonRequired = required;
+                this.powerSupplyCommon.forEach(control => control.updateValueAndValidity({onlySelf: true}));
+            }
+        });
+        this.epd$ = (
+            this.isNew
                 ? epdService.list$().pipe(
                     take(1),
                     map(epds => {
@@ -102,8 +111,12 @@ export class EpdsFormComponent {
         return (this.form.get('powerSupply') as FormArray).controls as FormControl[];
     }
 
+    get powerSupplyCommonFormArray(): FormArray {
+        return this.form.get('powerSupplyCommon') as FormArray;
+    }
+
     get powerSupplyCommon(): FormControl[] {
-        return (this.form.get('powerSupplyCommon') as FormArray).controls as FormControl[];
+        return this.powerSupplyCommonFormArray.controls as FormControl[];
     }
 
     get otherPayments(): FormControl[] {
@@ -116,6 +129,11 @@ export class EpdsFormComponent {
 
     get receiptTotalPayment(): FormControl {
         return this.form.get('receiptTotalPayment') as FormControl;
+    }
+
+    @autobind
+    private powerSupplyCommonValidator(control: AbstractControl): ValidationErrors {
+        return this.powerSupplyCommonRequired ? Validators.required(control) : null;
     }
 
     submit(): void {
