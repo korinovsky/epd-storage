@@ -65,7 +65,6 @@ export abstract class AbstractRecordService<T extends Record> {
                 itemData[key] = itemData[key].toDate();
             }
         });
-        console.log(item, id, itemData);
         return fromPromise(this.collection.doc(id).set(itemData)).pipe(
             map(() => item)
         );

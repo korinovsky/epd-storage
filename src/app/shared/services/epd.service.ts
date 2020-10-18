@@ -7,6 +7,8 @@ import {map, tap} from 'rxjs/operators';
 import moment from 'moment';
 import {AppService} from '~services/app.service';
 import {AddressService} from '~services/address.service';
+import {TariffService} from '~services/tariff.service';
+import {Tariff} from '~models/tariff.model';
 
 const transformEpd = epd => epd.date = moment(epd.date.toDate());
 
@@ -15,29 +17,51 @@ const transformEpd = epd => epd.date = moment(epd.date.toDate());
 })
 export class EpdService extends AbstractRecordService<Epd> {
     private listSubject$ = new BehaviorSubject<Epd[]>(null);
+    private tariffs: Tariff[];
 
     constructor(
         private appService: AppService,
-        private addressService: AddressService,
+        addressService: AddressService,
+        tariffService: TariffService,
         firestore: AngularFirestore
     ) {
         super(firestore);
+        tariffService.list$().subscribe(tariffs => {
+            this.tariffs = tariffs;
+            this.listChanged();
+        });
         this.appService.address$.subscribe(
             address => {
                 this.path = address ? addressService.getDocumentRef$(address.id).path + '/epds' : null;
-                const list$ = super.list$();
-                if (list$) {
-                    list$.pipe(
-                        tap(epds => epds.forEach(transformEpd)),
-                        map(epds => epds.sort((a, b) => a.date < b.date ? -1 : 0))
-                    ).subscribe(
-                        list => this.listSubject$.next(list)
-                    );
-                } else if (this.listSubject$.value) {
-                    this.listSubject$.next(null);
-                }
+                this.listChanged();
             }
         );
+    }
+
+    private listChanged(): void {
+        const list$ = super.list$();
+        if (list$ && this.tariffs) {
+            list$.pipe(
+                tap(epds => epds.forEach(transformEpd)),
+                map(epds => epds.sort((a, b) => a.date < b.date ? -1 : 0)),
+                tap(epds => {
+                    let prev: Epd;
+                    let tariffIndex = -1;
+                    epds.forEach(epd => {
+                        while (this.tariffs[tariffIndex + 1] && epd.date.isSameOrAfter(this.tariffs[tariffIndex + 1].date)) {
+                            tariffIndex++;
+                        }
+                        epd.prev = prev;
+                        epd.tariff = this.tariffs[tariffIndex];
+                        prev = epd;
+                    });
+                })
+            ).subscribe(
+                list => this.listSubject$.next(list)
+            );
+        } else if (this.listSubject$.value) {
+            this.listSubject$.next(null);
+        }
     }
 
     get$(id: string): Observable<Epd> {
@@ -48,5 +72,10 @@ export class EpdService extends AbstractRecordService<Epd> {
 
     list$(): Observable<Epd[]> {
         return this.listSubject$;
+    }
+
+
+    update$({prev, tariff, ...item}: Epd): Observable<Epd> {
+        return super.update$(item as Epd);
     }
 }
