@@ -2,11 +2,11 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 
 @Component({
-    selector: 'app-string-input',
-    templateUrl: './string-input.component.html',
-    styleUrls: ['./string-input.component.scss']
+    selector: 'app-text-input',
+    templateUrl: './text-input.component.html',
+    styleUrls: ['./text-input.component.scss']
 })
-export class StringInputComponent {
+export class TextInputComponent {
     @Input() control: FormControl;
     @Input() label: string;
     @Input() placeholder: string;

@@ -3,10 +3,10 @@
         {{isNew ? 'Новый адрес' : 'Редактирование адреса'}}
     </h2>
     <mat-dialog-content>
-        <app-string-input
+        <app-text-input
             [control]="name"
             label="Название адреса"
-        ></app-string-input>
+        ></app-text-input>
         <app-number-input
             [control]="area"
             [decimal]="1"

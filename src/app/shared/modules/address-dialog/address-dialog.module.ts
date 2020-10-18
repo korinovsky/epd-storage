@@ -6,7 +6,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';
 import {NumberInputModule} from '~modules/number-input/number-input.module';
-import {StringInputModule} from '~modules/string-input/string-input.module';
+import {TextInputModule} from '~modules/text-input/text-input.module';
 
 @NgModule({
     declarations: [
@@ -20,7 +20,7 @@ import {StringInputModule} from '~modules/string-input/string-input.module';
         MatButtonModule,
         MatDialogModule,
         NumberInputModule,
-        StringInputModule
+        TextInputModule
     ]
 })
 export class AddressDialogModule {}

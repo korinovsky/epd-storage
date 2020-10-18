@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {StringInputComponent} from './string-input.component';
+import {TextInputComponent} from './text-input.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -9,10 +9,10 @@ import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
     declarations: [
-        StringInputComponent
+        TextInputComponent
     ],
     exports: [
-        StringInputComponent
+        TextInputComponent
     ],
     imports: [
         MatFormFieldModule,
@@ -23,4 +23,4 @@ import {MatButtonModule} from '@angular/material/button';
         MatButtonModule,
     ]
 })
-export class StringInputModule {}
+export class TextInputModule {}
