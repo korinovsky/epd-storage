@@ -4,7 +4,7 @@ import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {User} from '~models/user.model';
 import {Address} from '~models/address.model';
 import {AddressService} from '~services/address.service';
-import {iif} from 'rxjs';
+import {defer, iif} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import autobind from 'autobind-decorator';
 import {UserService} from '~services/user.service';
@@ -81,7 +81,7 @@ export class AddressDialogComponent implements OnInit {
         this.form.disable();
         iif(
             () => this.isNew,
-            this.addressService.add$(value).pipe(
+            defer(() => this.addressService.add$(value).pipe(
                 switchMap(address => {
                     const {addresses = [], ...rest} = this.user;
                     const user = {
@@ -99,8 +99,8 @@ export class AddressDialogComponent implements OnInit {
                         }),
                     );
                 }),
-            ),
-            this.addressService.update$(Object.assign({}, this.address, value))
+            )),
+            defer(() => this.addressService.update$(Object.assign({}, this.address, value)))
         ).subscribe(this.close);
     }
 }

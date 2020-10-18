@@ -1,7 +1,7 @@
 import {AngularFirestore, AngularFirestoreCollection, DocumentReference} from '@angular/fire/firestore';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {fromPromise} from 'rxjs/internal-compatibility';
-import {defer, Observable, of, throwError} from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 import {Record} from '~models/record.model';
 import {isMoment} from 'moment';
 import {Error} from '~models/error.model';
@@ -50,29 +50,25 @@ export abstract class AbstractRecordService<T extends Record> {
     }
 
     delete$(id: string): Observable<void> {
-        return defer(() => fromPromise(this.collection.doc(id).delete()));
+        return fromPromise(this.collection.doc(id).delete());
     }
 
     add$(item: T): Observable<T> {
-        return defer(() => {
-            const id = this.angularFirestore.createId();
-            return this.update$({id, ...item});
-        });
+        const id = this.angularFirestore.createId();
+        return this.update$({id, ...item});
     }
 
     update$(item: T): Observable<T> {
-        return defer(() => {
-            const {id, ...itemData} = item;
-            Object.keys(itemData).forEach(key => {
-                if (isMoment(itemData[key])) {
-                    itemData[key] = itemData[key].toDate();
-                }
-            });
-            console.log(item, id, itemData);
-            return fromPromise(this.collection.doc(id).set(itemData)).pipe(
-                map(() => item)
-            );
+        const {id, ...itemData} = item;
+        Object.keys(itemData).forEach(key => {
+            if (isMoment(itemData[key])) {
+                itemData[key] = itemData[key].toDate();
+            }
         });
+        console.log(item, id, itemData);
+        return fromPromise(this.collection.doc(id).set(itemData)).pipe(
+            map(() => item)
+        );
     }
 
     @autobind

@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AuthService, AuthUser} from '~core/auth.service';
 import {UserService} from '~services/user.service';
 import {catchError, filter, map, switchMap, tap} from 'rxjs/operators';
 import {Error} from '~models/error.model';
 import {User} from '~models/user.model';
-import {BehaviorSubject, defer, iif, Observable, of, throwError} from 'rxjs';
+import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import _identity from 'lodash/identity';
 import {MatDialog} from '@angular/material/dialog';
 import {AddressDialogComponent, DialogData} from '~modules/address-dialog/address-dialog.component';
@@ -13,7 +13,7 @@ import {AddressService} from '~services/address.service';
 import {Address} from '~models/address.model';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AppService {
     user$ = new BehaviorSubject<User>(null);
@@ -74,13 +74,11 @@ export class AppService {
             switchMap(user => {
                 const {addresses = [], currentAddress = 0} = user;
                 const addressRef = addresses.length > 0 && addresses[currentAddress < addresses.length ? currentAddress : 0];
-                return iif(
-                    () => !addressRef,
-                    of({user}),
-                    defer(() => this.addressService.getByRef$(addressRef).pipe(
+                return !addressRef
+                    ? of({user})
+                    : this.addressService.getByRef$(addressRef).pipe(
                         map(address => ({user, address}))
-                    ))
-                );
+                    );
             })
         );
     }
