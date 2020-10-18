@@ -3,16 +3,21 @@
 .row {
   $spacer: $spacer / 2;
   display: flex;
+  flex-wrap: wrap;
   margin: 0 (-$spacer);
 
-  > * {
+  app-number-input, app-month-input {
     display: block;
-    min-width: 280px;
+    min-width: $col-width;
     margin: 0 $spacer;
+  }
+
+  .mat-icon-button {
+    margin: 11px 0 30px;
   }
 }
 
-.mat-icon-button {
+h1 button {
   margin: -4px 0;
   vertical-align: top;
 }

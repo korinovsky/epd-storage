@@ -19,43 +19,48 @@
         <app-number-input
             [control]="maintenance"
             label="Содержание и текущий ремонт"
+            placeholderPostfix="₽"
         ></app-number-input>
     </div>
     <div class="row">
         <app-number-input
             [control]="waterSupply"
             label="Водоснабжение"
+            placeholderPostfix="₽"
         ></app-number-input>
         <app-number-input
             [control]="waterDisposal"
             label="Водоотведение"
+            placeholderPostfix="₽"
         ></app-number-input>
     </div>
     <div class="row">
         <app-number-input
             [control]="heatSupply"
             label="Отопление"
+            placeholderPostfix="₽"
         ></app-number-input>
     </div>
     <div class="row">
         <app-number-input
             [control]="powerSupply[0]"
             label="Электроснабжение дн. начисление"
+            placeholderPostfix="₽"
         ></app-number-input>
         <app-number-input
             [control]="powerSupply[1]"
             label="Электроснабжение нч. начисление"
+            placeholderPostfix="₽"
         ></app-number-input>
         <app-number-input
             [control]="powerSupply[2]"
             label="Электроснабжение пик. начисление"
+            placeholderPostfix="₽"
         ></app-number-input>
     </div>
-    <div>
-        <button [disabled]="form.disabled" color="primary" mat-flat-button type="submit">
-            {{isNew ? 'Добавить' : 'Сохранить'}}
-        </button>
-    </div>
+    <button [disabled]="form.disabled" color="primary" mat-flat-button type="submit">
+        {{isNew ? 'Добавить' : 'Сохранить'}}
+    </button>
 </form>
 <ng-template #loader>
     <app-loader></app-loader>

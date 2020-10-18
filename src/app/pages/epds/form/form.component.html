@@ -43,32 +43,66 @@
         <app-number-input
             [control]="powerSupply[0]"
             [decimal]="3"
-            label="Электроснабжение дн. начисление"
+            label="Электроснабжение дн. индив."
         ></app-number-input>
         <app-number-input
             [control]="powerSupply[1]"
             [decimal]="3"
-            label="Электроснабжение нч. начисление"
+            label="Электроснабжение нч. индив."
         ></app-number-input>
         <app-number-input
             [control]="powerSupply[2]"
             [decimal]="3"
-            label="Электроснабжение пик. начисление"
+            label="Электроснабжение пик. индив."
+        ></app-number-input>
+    </div>
+    <div class="row">
+        <app-number-input
+            [control]="powerSupplyCommon[0]"
+            [decimal]="3"
+            label="Электроснабжение дн. общ."
+        ></app-number-input>
+        <app-number-input
+            [control]="powerSupplyCommon[1]"
+            [decimal]="3"
+            label="Электроснабжение нч. общ."
+        ></app-number-input>
+        <app-number-input
+            [control]="powerSupplyCommon[2]"
+            [decimal]="3"
+            label="Электроснабжение пик. общ."
         ></app-number-input>
     </div>
     <div class="row">
         <ng-container *ngFor="let control of otherPayments; let index = index">
             <app-number-input
+                (suffixClick)="removeOtherPayment(index)"
                 [control]="control"
                 [label]="'Дополнительная сумма ' + (index + 1)"
-            ></app-number-input>
+                [suffix]="canRemoveOtherPayment && 'remove'"
+                placeholderPostfix="₽"
+            >
+            </app-number-input>
         </ng-container>
-    </div>
-    <div>
-        <button [disabled]="form.disabled" color="primary" mat-flat-button type="submit">
-            {{isNew ? 'Добавить' : 'Сохранить'}}
+        <button
+            class="add-other-payment"
+            (click)="addOtherPayment()"
+            mat-icon-button
+            type="button"
+        >
+            <mat-icon>add</mat-icon>
         </button>
     </div>
+    <div class="row">
+        <app-number-input
+            [control]="receiptTotalPayment"
+            label="Итого по квитанции"
+            placeholderPostfix="₽"
+        ></app-number-input>
+    </div>
+    <button [disabled]="form.disabled" color="primary" mat-flat-button type="submit">
+        {{isNew ? 'Добавить' : 'Сохранить'}}
+    </button>
 </form>
 <ng-template #loader>
     <app-loader></app-loader>

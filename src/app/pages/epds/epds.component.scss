@@ -1,15 +1,16 @@
 @import "src/scss/variables";
 
 .items {
+  $spacer: $spacer / 2;
   display: flex;
   flex-wrap: wrap;
-  margin: -$spacer / 2;
+  margin: -$spacer;
 
   > * {
     cursor: pointer;
     display: block;
-    width: 300px;
-    margin: $spacer / 2;
+    width: $col-width;
+    margin: $spacer;
   }
 }
 

@@ -43,9 +43,11 @@ export class TariffsFormComponent {
                     take(1),
                     map(tariffs => {
                         const {length} = tariffs;
-                        const prevTariff = length > 0 ? tariffs[length - 1] : {} as Tariff;
+                        const prevTariff = length > 0 ? tariffs[length - 1] : {
+                            date: moment().subtract(2, 'month').startOf('month'),
+                        } as Tariff;
                         return Object.assign({}, prevTariff, {
-                            date: moment()
+                            date: moment(prevTariff.date).add(1, 'month'),
                         }) as Tariff;
                     })
                 )

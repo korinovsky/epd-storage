@@ -6,5 +6,7 @@ export interface Epd extends Record {
     waterSupply: number[];
     heatSupply: number[];
     powerSupply: number[];
+    powerSupplyCommon: number[];
     otherPayments: number[];
+    receiptTotalPayment: number;
 }

@@ -7,4 +7,14 @@
         matInput
         type="number"
     >
+    <button
+        (click)="suffixClick.emit()"
+        *ngIf="suffix"
+        mat-icon-button
+        matSuffix
+        type="button"
+    >
+        <mat-icon>{{suffix}}</mat-icon>
+    </button>
+
 </mat-form-field>

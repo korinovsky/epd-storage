@@ -7,6 +7,7 @@ import {catchError, finalize, map, take, tap} from 'rxjs/operators';
 import {FormArray, FormBuilder, FormControl, Validators} from '@angular/forms';
 import moment from 'moment';
 import autobind from 'autobind-decorator';
+import _identity from 'lodash/identity';
 
 @Component({
     selector: 'app-epds-form',
@@ -31,7 +32,13 @@ export class EpdsFormComponent {
             [null, Validators.required],
             [null, Validators.required]
         ]),
-        otherPayments: this.formBuilder.array([]),
+        powerSupplyCommon: this.formBuilder.array([
+            [null, Validators.required],
+            [null, Validators.required],
+            [null, Validators.required]
+        ]),
+        otherPayments: this.formBuilder.array([[null]]),
+        receiptTotalPayment: [null, Validators.required],
     });
     private readonly id: string;
 
@@ -43,17 +50,29 @@ export class EpdsFormComponent {
     ) {
         this.id = route.snapshot.params.id;
         this.epd$ = (this.isNew
-            ? epdService.list$().pipe(
-                take(1),
-                map(epds => {
-                    const {length} = epds;
-                    const prevEpd = length > 0 ? epds[length - 1] : {} as Epd;
-                    return Object.assign({}, prevEpd, {
-                        date: moment()
-                    }) as Epd;
-                })
-            )
-            : epdService.get$(this.id)
+                ? epdService.list$().pipe(
+                    take(1),
+                    map(epds => {
+                        const {length} = epds;
+                        const prevEpd = length > 0 ? epds[length - 1] : {
+                            date: moment().subtract(2, 'month').startOf('month'),
+                        } as Epd;
+                        return Object.assign({}, prevEpd, {
+                            date: moment(prevEpd.date).add(1, 'month'),
+                            powerSupplyCommon: [],
+                            otherPayments: [],
+                            receiptTotalPayment: null,
+                        } as Epd) as Epd;
+                    })
+                )
+                : epdService.get$(this.id).pipe(
+                    tap(epd => {
+                        const length = epd.otherPayments?.length ?? 0;
+                        while (length > this.otherPaymentsArray.length) {
+                            this.addOtherPayment();
+                        }
+                    })
+                )
         ).pipe(
             tap(epd => this.form.reset(epd)),
             catchError(error => {
@@ -83,8 +102,20 @@ export class EpdsFormComponent {
         return (this.form.get('powerSupply') as FormArray).controls as FormControl[];
     }
 
+    get powerSupplyCommon(): FormControl[] {
+        return (this.form.get('powerSupplyCommon') as FormArray).controls as FormControl[];
+    }
+
     get otherPayments(): FormControl[] {
-        return (this.form.get('otherPayments') as FormArray).controls as FormControl[];
+        return this.otherPaymentsArray.controls as FormControl[];
+    }
+
+    private get otherPaymentsArray(): FormArray {
+        return this.form.get('otherPayments') as FormArray;
+    }
+
+    get receiptTotalPayment(): FormControl {
+        return this.form.get('receiptTotalPayment') as FormControl;
     }
 
     submit(): void {
@@ -92,12 +123,14 @@ export class EpdsFormComponent {
             return;
         }
         this.form.disable();
+        const value = this.form.value as Epd;
+        value.otherPayments = value.otherPayments.filter(_identity);
         (
             this.isNew
-                ? this.epdService.add$(this.form.value)
+                ? this.epdService.add$(value)
                 : this.epdService.update$({
                     id: this.id,
-                    ...this.form.value
+                    ...value
                 })
         ).pipe(
             finalize(() => this.form.enable()),
@@ -114,5 +147,17 @@ export class EpdsFormComponent {
     @autobind
     private navigateToList(): void {
         this.router.navigate(['epds']);
+    }
+
+    get canRemoveOtherPayment(): boolean {
+        return this.otherPaymentsArray.length > 1;
+    }
+
+    addOtherPayment(): void {
+        this.otherPaymentsArray.push(this.formBuilder.control(null));
+    }
+
+    removeOtherPayment(index: number): void {
+        this.otherPaymentsArray.removeAt(index);
     }
 }

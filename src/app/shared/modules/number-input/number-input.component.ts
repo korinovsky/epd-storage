@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 
 @Component({
@@ -8,11 +8,14 @@ import {FormControl} from '@angular/forms';
 })
 export class NumberInputComponent {
     @Input() control: FormControl;
-    @Input() label;
+    @Input() label: string;
     @Input() decimal = 2;
+    @Input() placeholderPostfix: string;
+    @Input() suffix: string;
+    @Output() suffixClick = new EventEmitter();
 
     get placeholder(): string {
-        return 1..toFixed(this.decimal);
+        return 1..toFixed(this.decimal) + (this.placeholderPostfix ? ' ' + this.placeholderPostfix : '');
     }
 
     get step(): number {

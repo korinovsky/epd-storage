@@ -1,5 +1,7 @@
+@import "src/scss/variables";
+
 form {
-  min-width: 300px;
+  min-width: $col-width;
 }
 
 .mat-form-field {

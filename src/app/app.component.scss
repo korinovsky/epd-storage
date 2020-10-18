@@ -1,7 +1,7 @@
 @import "~src/scss/variables";
 
 .container {
-  max-width: 900px + $spacer * 2;
+  max-width: $cols * ($col-width + $spacer);
   margin: $spacer auto;
   padding: 0 $spacer;
 }
