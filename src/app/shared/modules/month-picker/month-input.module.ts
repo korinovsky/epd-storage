@@ -6,6 +6,7 @@ import {MatInputModule} from '@angular/material/input';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import {CommonModule} from '@angular/common';
 
 const monthFormat = {
     parse: {
@@ -31,6 +32,7 @@ const monthFormat = {
         MatFormFieldModule,
         MatInputModule,
         ReactiveFormsModule,
+        CommonModule,
     ],
     providers: [
         {

@@ -24,4 +24,14 @@ export class MonthInputComponent {
         this.control.setValue(value);
         datepicker.close();
     }
+
+    get errorMessage(): string {
+        const error = Object.keys(this.control.errors)[0];
+        switch (error) {
+            case 'required': {
+                return 'Поле обязательно для заполнения';
+            }
+        }
+        return error;
+    }
 }

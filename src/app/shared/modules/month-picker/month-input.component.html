@@ -13,4 +13,5 @@
         panelClass="app-month-picker"
         startView="multi-year"
     ></mat-datepicker>
+    <mat-error *ngIf="control.invalid">{{errorMessage}}</mat-error>
 </mat-form-field>

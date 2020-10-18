@@ -3,15 +3,10 @@
         {{isNew ? 'Новый адрес' : 'Редактирование адреса'}}
     </h2>
     <mat-dialog-content>
-        <mat-form-field appearance="fill">
-            <mat-label>Название адреса</mat-label>
-            <input
-                [formControl]="name"
-                matInput
-                type="text"
-            >
-            <mat-error *ngIf="name.invalid">{{nameErrorMessage}}</mat-error>
-        </mat-form-field>
+        <app-string-input
+            [control]="name"
+            label="Название адреса"
+        ></app-string-input>
         <app-number-input
             [control]="area"
             [decimal]="1"

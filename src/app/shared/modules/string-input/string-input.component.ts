@@ -2,25 +2,16 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 
 @Component({
-    selector: 'app-number-input',
-    templateUrl: './number-input.component.html',
-    styleUrls: ['./number-input.component.scss']
+    selector: 'app-string-input',
+    templateUrl: './string-input.component.html',
+    styleUrls: ['./string-input.component.scss']
 })
-export class NumberInputComponent {
+export class StringInputComponent {
     @Input() control: FormControl;
     @Input() label: string;
-    @Input() decimal = 2;
-    @Input() placeholderPostfix: string;
+    @Input() placeholder: string;
     @Input() suffix: string;
     @Output() suffixClick = new EventEmitter();
-
-    get placeholder(): string {
-        return 1..toFixed(this.decimal) + (this.placeholderPostfix ? ' ' + this.placeholderPostfix : '');
-    }
-
-    get step(): number {
-        return this.decimal > 1 ? (1 / Math.pow(10, this.decimal)) : 1;
-    }
 
     get errorMessage(): string {
         const error = Object.keys(this.control.errors)[0];

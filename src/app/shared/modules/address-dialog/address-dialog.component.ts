@@ -54,10 +54,6 @@ export class AddressDialogComponent implements OnInit {
         return this.form.get('totalArea') as FormControl;
     }
 
-    get nameErrorMessage(): string {
-        return 'Поле обязательно для заполнения';
-    }
-
     private get user(): User {
         return this.data.user;
     }
