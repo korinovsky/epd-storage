@@ -20,7 +20,7 @@ export class EpdService extends AbstractRecordService<Epd> {
     private tariffs: Tariff[];
 
     constructor(
-        private appService: AppService,
+        appService: AppService,
         addressService: AddressService,
         tariffService: TariffService,
         firestore: AngularFirestore
@@ -30,7 +30,7 @@ export class EpdService extends AbstractRecordService<Epd> {
             this.tariffs = tariffs;
             this.listChanged();
         });
-        this.appService.address$.subscribe(
+        appService.address$.subscribe(
             address => {
                 this.path = address ? addressService.getDocumentRef$(address.id).path + '/epds' : null;
                 this.listChanged();

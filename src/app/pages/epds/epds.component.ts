@@ -2,8 +2,9 @@ import {ChangeDetectionStrategy, Component, TrackByFunction} from '@angular/core
 import {Epd} from '~models/epd.model';
 import {Observable} from 'rxjs';
 import {EpdService} from '~services/epd.service';
-import {AuthService} from '~core/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {AppService} from '~services/app.service';
+import {Address} from '~models/address.model';
 
 @Component({
     selector: 'app-storage',
@@ -12,16 +13,17 @@ import {ActivatedRoute, Router} from '@angular/router';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EpdsComponent {
-    readonly epds$ = this.epdService.list$();
-    readonly isUserLoggedIn$: Observable<boolean>;
+    readonly epds$: Observable<Epd[]>;
+    readonly address$: Observable<Address>;
 
     constructor(
-        private epdService: EpdService,
         private router: Router,
         private route: ActivatedRoute,
-        auth: AuthService,
+        epdService: EpdService,
+        appService: AppService,
     ) {
-        this.isUserLoggedIn$ = auth.isUserLoggedIn$;
+        this.epds$ = epdService.list$();
+        this.address$ = appService.address$;
     }
 
     trackBy: TrackByFunction<Epd> = (_, {id}) => id;

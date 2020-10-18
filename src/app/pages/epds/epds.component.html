@@ -1,19 +1,23 @@
-<h1>Платежки</h1>
-<div class="items">
-    <app-epds-item
-        (click)="details(epd)"
-        (edit)="edit(epd)"
-        *ngFor="let epd of epds$ | async; trackBy: trackBy"
-        [epd]="epd"
-    ></app-epds-item>
-</div>
-<div class="buttons">
-    <a
-        *ngIf="isUserLoggedIn$ | async"
-        color="primary"
-        mat-flat-button
-        routerLink="create"
-    >
-        Добавить
-    </a>
-</div>
+<ng-container *ngIf="address$ | async">
+    <h1>Платежки</h1>
+    <div class="items" *ngIf="epds$ | async as epds; else loader">
+        <app-epds-item
+            (click)="details(epd)"
+            (edit)="edit(epd)"
+            *ngFor="let epd of epds; trackBy: trackBy"
+            [epd]="epd"
+        ></app-epds-item>
+    </div>
+    <div class="buttons">
+        <a
+            color="primary"
+            mat-flat-button
+            routerLink="create"
+        >
+            Добавить
+        </a>
+    </div>
+</ng-container>
+<ng-template #loader>
+    <app-loader></app-loader>
+</ng-template>

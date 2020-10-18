@@ -7,6 +7,7 @@ import {EpdsItemModule} from './item/item.module';
 import {EpdsRoutingModule} from './epds-routing.module';
 import {EpdsDetailsModule} from '~app/pages/epds/details/details.module';
 import {EpdsFormModule} from '~app/pages/epds/form/form.module';
+import {LoaderModule} from '~modules/loader/loader.module';
 
 @NgModule({
     declarations: [
@@ -19,7 +20,8 @@ import {EpdsFormModule} from '~app/pages/epds/form/form.module';
         MatButtonModule,
         EpdsItemModule,
         EpdsDetailsModule,
-        EpdsFormModule
+        EpdsFormModule,
+        LoaderModule
     ]
 })
 export class EpdsModule {}

@@ -1,9 +1,10 @@
 import {Component, TrackByFunction} from '@angular/core';
 import {Observable} from 'rxjs';
-import {AuthService} from '~core/auth.service';
 import {TariffService} from '~services/tariff.service';
 import {Tariff} from '~models/tariff.model';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Address} from '~models/address.model';
+import {AppService} from '~services/app.service';
 
 @Component({
     selector: 'app-tariffs',
@@ -11,16 +12,17 @@ import {ActivatedRoute, Router} from '@angular/router';
     styleUrls: ['./tariffs.component.scss']
 })
 export class TariffsComponent {
-    readonly tariffs$ = this.tariffService.list$();
-    readonly isUserLoggedIn$: Observable<boolean>;
+    readonly tariffs$: Observable<Tariff[]>;
+    readonly address$: Observable<Address>;
 
     constructor(
-        private tariffService: TariffService,
         private router: Router,
         private route: ActivatedRoute,
-        auth: AuthService,
+        tariffService: TariffService,
+        appService: AppService,
     ) {
-        this.isUserLoggedIn$ = auth.isUserLoggedIn$;
+        this.tariffs$ = tariffService.list$();
+        this.address$ = appService.address$;
     }
 
     trackBy: TrackByFunction<Tariff> = (_, {id}) => id;

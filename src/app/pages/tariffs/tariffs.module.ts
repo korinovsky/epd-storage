@@ -6,6 +6,7 @@ import {TariffsItemModule} from '~app/pages/tariffs/item/item.module';
 import {MatButtonModule} from '@angular/material/button';
 import {TariffsFormModule} from '~app/pages/tariffs/form/form.module';
 import {TariffsDetailsModule} from '~app/pages/tariffs/details/details.module';
+import {LoaderModule} from '~modules/loader/loader.module';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import {TariffsDetailsModule} from '~app/pages/tariffs/details/details.module';
         TariffsDetailsModule,
         CommonModule,
         TariffsItemModule,
-        MatButtonModule
+        MatButtonModule,
+        LoaderModule
     ]
 })
 export class TariffsModule {}
