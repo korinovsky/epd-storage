@@ -1,5 +1,10 @@
 import {Epd} from '~models/epd.model';
 
+export function calcMaintenance({tariff, address: {area}}: Epd): number {
+    const {maintenance: tariffMaintenance} = tariff ?? {};
+    return tariffMaintenance ? area * tariffMaintenance : 0;
+}
+
 export function calcWaterSupply({waterSupply, prev, tariff}: Epd): number {
     const {waterSupply: prevWaterSupply} = prev ?? {};
     const {waterSupply: tariffWaterSupply} = tariff ?? {};
@@ -37,5 +42,6 @@ export function calcOtherPayments({otherPayments = []}: Epd): number {
 }
 
 export function calcTotal(epd: Epd): number {
-    return calcWaterSupply(epd) + calcHeatSupply(epd) + calcPowerSupply(epd) + calcPowerSupplyCommon(epd) + calcOtherPayments(epd);
+    return calcMaintenance(epd) + calcWaterSupply(epd) + calcHeatSupply(epd) + calcPowerSupply(epd) + calcPowerSupplyCommon(epd)
+        + calcOtherPayments(epd);
 }
