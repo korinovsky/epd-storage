@@ -143,6 +143,9 @@ export class EpdsFormComponent {
         this.form.disable();
         const value = this.form.value as Epd;
         value.otherPayments = value.otherPayments.filter(_identity);
+        if (!this.powerSupplyCommonRequired) {
+            delete value.powerSupplyCommon;
+        }
         (
             this.isNew
                 ? this.epdService.add$(value)
