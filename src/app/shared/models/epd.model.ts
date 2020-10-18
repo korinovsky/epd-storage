@@ -1,6 +1,7 @@
 import {Record} from './record.model';
 import {Moment} from 'moment';
 import {Tariff} from '~models/tariff.model';
+import {Address} from '~models/address.model';
 
 export interface Epd extends Record {
     date: Moment;
@@ -12,4 +13,5 @@ export interface Epd extends Record {
     receiptTotalPayment: number;
     prev: Epd;
     tariff: Tariff;
+    address: Address;
 }

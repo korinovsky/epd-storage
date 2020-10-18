@@ -20,7 +20,7 @@ export class EpdService extends AbstractRecordService<Epd> {
     private tariffs: Tariff[];
 
     constructor(
-        appService: AppService,
+        private appService: AppService,
         addressService: AddressService,
         tariffService: TariffService,
         firestore: AngularFirestore
@@ -30,7 +30,7 @@ export class EpdService extends AbstractRecordService<Epd> {
             this.tariffs = tariffs;
             this.listChanged();
         });
-        appService.address$.subscribe(
+        this.appService.address$.subscribe(
             address => {
                 this.path = address ? addressService.getDocumentRef$(address.id).path + '/epds' : null;
                 this.listChanged();
@@ -51,6 +51,7 @@ export class EpdService extends AbstractRecordService<Epd> {
                         while (this.tariffs[tariffIndex + 1] && epd.date.isSameOrAfter(this.tariffs[tariffIndex + 1].date)) {
                             tariffIndex++;
                         }
+                        epd.address = this.appService.address;
                         epd.prev = prev;
                         epd.tariff = this.tariffs[tariffIndex];
                         prev = epd;
@@ -75,7 +76,7 @@ export class EpdService extends AbstractRecordService<Epd> {
     }
 
 
-    update$({prev, tariff, ...item}: Epd): Observable<Epd> {
+    update$({prev, tariff, address, ...item}: Epd): Observable<Epd> {
         return super.update$(item as Epd);
     }
 }
