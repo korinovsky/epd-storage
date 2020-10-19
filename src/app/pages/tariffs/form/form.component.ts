@@ -4,7 +4,7 @@ import {Tariff} from '~models/tariff.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TariffService} from '~services/tariff.service';
 import {catchError, finalize, map, take, tap} from 'rxjs/operators';
-import {FormArray, FormBuilder, FormControl, Validators} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormControl, ValidationErrors, Validators} from '@angular/forms';
 import moment from 'moment';
 import autobind from 'autobind-decorator';
 
@@ -19,16 +19,17 @@ export class TariffsFormComponent {
     form = this.formBuilder.group({
         date: [null, Validators.required],
         maintenance: [null, Validators.required],
-        waterSupply: [null, Validators.required],
-        waterDisposal: [null, Validators.required],
-        heatSupply: [null, Validators.required],
+        waterSupply: [null],
+        waterDisposal: [null],
+        heatSupply: [null],
         powerSupply: this.formBuilder.array([
-            [null, Validators.required],
-            [null, Validators.required],
-            [null, Validators.required]
+            [null, this.powerSupplyValidator],
+            [null, this.powerSupplyValidator],
+            [null, this.powerSupplyValidator]
         ]),
     });
     private readonly id: string;
+    private powerSupplyRequired = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -37,6 +38,13 @@ export class TariffsFormComponent {
         route: ActivatedRoute,
     ) {
         this.id = route.snapshot.params.id;
+        this.powerSupplyArray.valueChanges.subscribe(values => {
+            const required = values.some(value => value !== null);
+            if (this.powerSupplyRequired !== required) {
+                this.powerSupplyRequired = required;
+                this.powerSupply.forEach(control => control.updateValueAndValidity());
+            }
+        });
         this.tariff$ = (
             this.isNew
                 ? tariffService.list$().pipe(
@@ -85,13 +93,26 @@ export class TariffsFormComponent {
         return this.form.get('heatSupply') as FormControl;
     }
 
+    private get powerSupplyArray(): FormArray {
+        return this.form.get('powerSupply') as FormArray;
+    }
+
     get powerSupply(): FormControl[] {
-        return (this.form.get('powerSupply') as FormArray).controls as FormControl[];
+        return this.powerSupplyArray.controls as FormControl[];
+    }
+
+    @autobind
+    private powerSupplyValidator(control: AbstractControl): ValidationErrors {
+        return this.powerSupplyRequired ? Validators.required(control) : null;
     }
 
     submit(): void {
         if (!this.form.valid) {
             return;
+        }
+        const value = this.form.value as Tariff;
+        if (!this.powerSupplyRequired) {
+            delete value.powerSupply;
         }
         this.form.disable();
         (

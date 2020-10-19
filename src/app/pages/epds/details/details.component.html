@@ -1,1 +1,42 @@
-<p>details works!</p>
+<ng-container *ngIf="epd$ | async as epd; else loader">
+    <h1>{{epd.date | moment:'MMMM YYYY' | titlecase}}</h1>
+    <table>
+        <tr *ngIf="calcMaintenance(epd) as value">
+            <td>Содержание и текущий ремонт</td>
+            <td>{{value}}</td>
+        </tr>
+        <tr *ngIf="calcWaterSupply(epd) as value">
+            <td>Холодное водоснабжение</td>
+            <td>{{value}}</td>
+        </tr>
+        <tr *ngIf="calcHeatSupply(epd) as value">
+            <td>Отопление</td>
+            <td>{{value}}</td>
+        </tr>
+        <tr *ngIf="calcPowerSupply(epd) as value">
+            <td>Электроснабжение индив.</td>
+            <td>{{value}}</td>
+        </tr>
+        <tr *ngIf="calcPowerSupplyCommon(epd) as value">
+            <td>Электроснабжение общ.</td>
+            <td>{{value}}</td>
+        </tr>
+        <tr *ngIf="calcOtherPayments(epd) as value">
+            <td>Дополнительная сумма</td>
+            <td>{{value}}</td>
+        </tr>
+        <ng-container *ngIf="calcTotal(epd) as value">
+            <tr>
+                <td>Итого</td>
+                <td>{{value}}</td>
+            </tr>
+            <tr *ngIf="calcTotal(epd) as value">
+                <td>Отличие от квитанции</td>
+                <td>{{epd.receiptTotalPayment - value}}</td>
+            </tr>
+        </ng-container>
+    </table>
+</ng-container>
+<ng-template #loader>
+    <app-loader></app-loader>
+</ng-template>

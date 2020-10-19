@@ -12,9 +12,9 @@ export class TariffsDetailsComponent {
     tariff$: Observable<Tariff>;
 
     constructor(
-        roure: ActivatedRoute,
+        route: ActivatedRoute,
         tariffService: TariffService,
     ) {
-        this.tariff$ = tariffService.get$(roure.snapshot.params.id);
+        this.tariff$ = tariffService.get$(route.snapshot.params.id);
     }
 }

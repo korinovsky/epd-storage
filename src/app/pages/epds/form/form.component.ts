@@ -20,17 +20,17 @@ export class EpdsFormComponent {
     form = this.formBuilder.group({
         date: [null, Validators.required],
         waterSupply: this.formBuilder.array([
-            [null, Validators.required],
-            [null, Validators.required]
+            [null, this.waterSupplyValidator],
+            [null, this.waterSupplyValidator]
         ]),
         heatSupply: this.formBuilder.array([
-            [null, Validators.required],
-            [null, Validators.required]
+            [null],
+            [null]
         ]),
         powerSupply: this.formBuilder.array([
-            [null, Validators.required],
-            [null, Validators.required],
-            [null, Validators.required]
+            [null, this.powerSupplyValidator],
+            [null, this.powerSupplyValidator],
+            [null, this.powerSupplyValidator]
         ]),
         powerSupplyCommon: this.formBuilder.array([
             [null, this.powerSupplyCommonValidator],
@@ -40,6 +40,8 @@ export class EpdsFormComponent {
         otherPayments: this.formBuilder.array([[null]]),
         receiptTotalPayment: [null, Validators.required],
     });
+    private waterSupplyRequired = false;
+    private powerSupplyRequired = false;
     private powerSupplyCommonRequired = false;
     private readonly id: string;
 
@@ -50,11 +52,25 @@ export class EpdsFormComponent {
         route: ActivatedRoute,
     ) {
         this.id = route.snapshot.params.id;
-        this.powerSupplyCommonFormArray.valueChanges.subscribe(values => {
+        this.waterSupplyArray.valueChanges.subscribe(values => {
+            const required = values.some(value => value !== null);
+            if (this.waterSupplyRequired !== required) {
+                this.waterSupplyRequired = required;
+                this.waterSupply.forEach(control => control.updateValueAndValidity());
+            }
+        });
+        this.powerSupplyArray.valueChanges.subscribe(values => {
+            const required = values.some(value => value !== null);
+            if (this.powerSupplyRequired !== required) {
+                this.powerSupplyRequired = required;
+                this.powerSupply.forEach(control => control.updateValueAndValidity());
+            }
+        });
+        this.powerSupplyCommonArray.valueChanges.subscribe(values => {
             const required = values.some(value => value !== null);
             if (this.powerSupplyCommonRequired !== required) {
                 this.powerSupplyCommonRequired = required;
-                this.powerSupplyCommon.forEach(control => control.updateValueAndValidity({onlySelf: true}));
+                this.powerSupplyCommon.forEach(control => control.updateValueAndValidity());
             }
         });
         this.epd$ = (
@@ -100,23 +116,35 @@ export class EpdsFormComponent {
     }
 
     get waterSupply(): FormControl[] {
-        return (this.form.get('waterSupply') as FormArray).controls as FormControl[];
+        return this.waterSupplyArray.controls as FormControl[];
+    }
+
+    private get waterSupplyArray(): FormArray {
+        return this.form.get('waterSupply') as FormArray;
     }
 
     get heatSupply(): FormControl[] {
-        return (this.form.get('heatSupply') as FormArray).controls as FormControl[];
+        return this.heatSupplyArray.controls as FormControl[];
+    }
+
+    private get heatSupplyArray(): FormArray {
+        return this.form.get('heatSupply') as FormArray;
     }
 
     get powerSupply(): FormControl[] {
-        return (this.form.get('powerSupply') as FormArray).controls as FormControl[];
+        return this.powerSupplyArray.controls as FormControl[];
     }
 
-    get powerSupplyCommonFormArray(): FormArray {
-        return this.form.get('powerSupplyCommon') as FormArray;
+    private get powerSupplyArray(): FormArray {
+        return this.form.get('powerSupply') as FormArray;
     }
 
     get powerSupplyCommon(): FormControl[] {
-        return this.powerSupplyCommonFormArray.controls as FormControl[];
+        return this.powerSupplyCommonArray.controls as FormControl[];
+    }
+
+    private get powerSupplyCommonArray(): FormArray {
+        return this.form.get('powerSupplyCommon') as FormArray;
     }
 
     get otherPayments(): FormControl[] {
@@ -132,6 +160,16 @@ export class EpdsFormComponent {
     }
 
     @autobind
+    private waterSupplyValidator(control: AbstractControl): ValidationErrors {
+        return this.waterSupplyRequired ? Validators.required(control) : null;
+    }
+
+    @autobind
+    private powerSupplyValidator(control: AbstractControl): ValidationErrors {
+        return this.powerSupplyRequired ? Validators.required(control) : null;
+    }
+
+    @autobind
     private powerSupplyCommonValidator(control: AbstractControl): ValidationErrors {
         return this.powerSupplyCommonRequired ? Validators.required(control) : null;
     }
@@ -140,12 +178,18 @@ export class EpdsFormComponent {
         if (!this.form.valid) {
             return;
         }
-        this.form.disable();
         const value = this.form.value as Epd;
         value.otherPayments = value.otherPayments.filter(_identity);
+        if (!this.waterSupplyRequired) {
+            delete value.waterSupply;
+        }
+        if (!this.powerSupplyRequired) {
+            delete value.powerSupply;
+        }
         if (!this.powerSupplyCommonRequired) {
             delete value.powerSupplyCommon;
         }
+        this.form.disable();
         (
             this.isNew
                 ? this.epdService.add$(value)
