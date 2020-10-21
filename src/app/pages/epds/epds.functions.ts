@@ -1,44 +1,69 @@
 import {Epd} from '~models/epd.model';
+import {Tariff} from '~models/tariff.model';
 
-const round = num => Math.round((num + Number.EPSILON) * 100) / 100;
+export const round = (num: number, decimals = 2) => Math.round((num + Number.EPSILON) * Math.pow(10, decimals)) / Math.pow(10, decimals);
 
 export function calcMaintenance({tariff, address: {area}}: Epd): number {
-    const {maintenance: tariffMaintenance} = tariff ?? {};
+    const {maintenance: tariffMaintenance} =  tariff ?? {} as Tariff;
     return tariffMaintenance ? round(area * tariffMaintenance) : 0;
 }
 
-export function calcWaterSupply({waterSupply, prev, tariff}: Epd): number {
-    const {waterSupply: prevWaterSupply} = prev ?? {};
-    const {waterSupply: tariffWaterSupply} = tariff ?? {};
+export function calcWaterSupply({waterSupply, prev, tariff}: Epd, index?: number): number {
+    const {waterSupply: prevWaterSupply} = prev ?? {} as Epd;
+    const {waterSupply: tariffWaterSupply} =  tariff ?? {} as Tariff;
     return waterSupply && prevWaterSupply && tariffWaterSupply
-        ? waterSupply.reduce((result, value, index) => result + round((value - prevWaterSupply[index]) * tariffWaterSupply), 0)
+        ? waterSupply.reduce((result, value, i) =>
+            result + ((index === undefined || index === i) ? round((value - prevWaterSupply[i]) * tariffWaterSupply) : 0),
+            0
+        )
         : 0;
 }
 
-export function calcHeatSupply({heatSupply, prev, tariff}: Epd): number {
-    const {heatSupply: prevHeatSupply} = prev ?? {};
-    const {heatSupply: tariffHeatSupply} = tariff ?? {};
-    const own = heatSupply && prevHeatSupply && prevHeatSupply[0] && tariffHeatSupply
+export function calcWaterDisposal({waterSupply, prev, tariff}: Epd): number {
+    const {waterSupply: prevWaterSupply} = prev ?? {} as Epd;
+    const {waterDisposal: tariffWaterDisposal} =  tariff ?? {} as Tariff;
+    return waterSupply && prevWaterSupply && tariffWaterDisposal
+        ? waterSupply.reduce((result, value, index) => result + round((value - prevWaterSupply[index]) * tariffWaterDisposal), 0)
+        : 0;
+}
+
+export function calcOwnHeatSupply({heatSupply, prev, tariff}: Epd): number {
+    const {heatSupply: prevHeatSupply} = prev ?? {} as Epd;
+    const {heatSupply: tariffHeatSupply} =  tariff ?? {} as Tariff;
+    return heatSupply && prevHeatSupply && prevHeatSupply[0] && tariffHeatSupply
         ? round((heatSupply[0] - prevHeatSupply[0]) * tariffHeatSupply)
         : 0;
-    const common = heatSupply && heatSupply[1] && tariffHeatSupply
+}
+
+export function calcCommonHeatSupply({heatSupply, tariff}: Epd): number {
+    const {heatSupply: tariffHeatSupply} =  tariff ?? {} as Tariff;
+    return heatSupply && heatSupply[1] && tariffHeatSupply
         ? round(heatSupply[1] * tariffHeatSupply)
         : 0;
-    return own + common;
 }
 
-export function calcPowerSupply({powerSupply, prev, tariff}: Epd): number {
-    const {powerSupply: prevPowerSupply} = prev ?? {};
-    const {powerSupply: tariffPowerSupply} = tariff ?? {};
+export function calcHeatSupply(epd: Epd): number {
+    return calcOwnHeatSupply(epd) + calcCommonHeatSupply(epd);
+}
+
+export function calcPowerSupply({powerSupply, prev, tariff}: Epd, index?: number): number {
+    const {powerSupply: prevPowerSupply} = prev ?? {} as Epd;
+    const {powerSupply: tariffPowerSupply} =  tariff ?? {} as Tariff;
     return powerSupply && prevPowerSupply && tariffPowerSupply
-        ? powerSupply.reduce((result, value, index) => result + round((value - prevPowerSupply[index]) * tariffPowerSupply[index]), 0)
+        ? powerSupply.reduce((result, value, i) =>
+            result + ((index === undefined || index === i) ? round((value - prevPowerSupply[i]) * tariffPowerSupply[i]) : 0),
+            0
+        )
         : 0;
 }
 
-export function calcPowerSupplyCommon({powerSupplyCommon, tariff}: Epd): number {
-    const {powerSupply: tariffPowerSupply} = tariff ?? {};
+export function calcPowerSupplyCommon({powerSupplyCommon, tariff}: Epd, index?: number): number {
+    const {powerSupply: tariffPowerSupply} =  tariff ?? {} as Tariff;
     return powerSupplyCommon && tariffPowerSupply
-        ? powerSupplyCommon.reduce((result, value, index) => result + round(value * tariffPowerSupply[index]), 0)
+        ? powerSupplyCommon.reduce((result, value, i) =>
+            result + index === undefined || index === i ? round(value * tariffPowerSupply[i]) : 0,
+            0
+        )
         : 0;
 }
 
@@ -47,6 +72,6 @@ export function calcOtherPayments({otherPayments = []}: Epd): number {
 }
 
 export function calcTotal(epd: Epd): number {
-    return calcMaintenance(epd) + calcWaterSupply(epd) + calcHeatSupply(epd) + calcPowerSupply(epd) + calcPowerSupplyCommon(epd)
-        + calcOtherPayments(epd);
+    return calcMaintenance(epd) + calcWaterSupply(epd) + calcWaterDisposal(epd) + calcHeatSupply(epd) + calcPowerSupply(epd)
+        + calcPowerSupplyCommon(epd) + calcOtherPayments(epd);
 }

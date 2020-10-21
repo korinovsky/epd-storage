@@ -4,7 +4,8 @@ import {EpdService} from '~services/epd.service';
 import {Observable} from 'rxjs';
 import {Epd} from '~models/epd.model';
 import {
-    calcMaintenance, calcWaterSupply, calcHeatSupply, calcPowerSupply, calcPowerSupplyCommon, calcOtherPayments, calcTotal
+    calcCommonHeatSupply, calcHeatSupply, calcMaintenance, calcOtherPayments, calcOwnHeatSupply, calcPowerSupply,
+    calcPowerSupplyCommon, calcTotal, calcWaterDisposal, calcWaterSupply, round
 } from '~app/pages/epds/epds.functions';
 import {filter, map} from 'rxjs/operators';
 import _identity from 'lodash/identity';
@@ -31,20 +32,64 @@ export class EpdsDetailsComponent {
         return calcMaintenance(epd);
     }
 
-    calcWaterSupply(epd: Epd): number {
-        return calcWaterSupply(epd);
+    waterSupply({waterSupply, prev: {waterSupply: prevWaterSupply}}: Epd, index: number): number {
+        return waterSupply[index] && prevWaterSupply[index]
+            ? round(waterSupply[index] - prevWaterSupply[index], 3)
+            : null;
+    }
+
+    calcWaterSupply(epd: Epd, index?: number): number {
+        return calcWaterSupply(epd, index);
+    }
+
+    waterDisposal({waterSupply, prev: {waterSupply: prevWaterSupply}}: Epd): number {
+        return round([0, 1].reduce((result, index) => result + (
+            waterSupply[index] && prevWaterSupply[index] ? waterSupply[index] - prevWaterSupply[index] : 0
+        ), 0), 3);
+    }
+
+    calcWaterDisposal(epd: Epd): number {
+        return calcWaterDisposal(epd);
+    }
+
+    ownHeatSupply({heatSupply: [heatSupply], prev}: Epd): number {
+        return heatSupply && prev?.heatSupply && prev.heatSupply[0] ? heatSupply - prev.heatSupply[0] : null;
+    }
+
+    commonHeatSupply({heatSupply: [, heatSupply]}: Epd): number {
+        return heatSupply;
+    }
+
+    calcOwnHeatSupply(epd: Epd): number {
+        return calcOwnHeatSupply(epd);
+    }
+
+    calcCommonHeatSupply(epd: Epd): number {
+        return calcCommonHeatSupply(epd);
     }
 
     calcHeatSupply(epd: Epd): number {
         return calcHeatSupply(epd);
     }
 
-    calcPowerSupply(epd: Epd): number {
-        return calcPowerSupply(epd);
+    powerSupply({powerSupply, prev}: Epd, index: number): number {
+        return powerSupply && powerSupply[index] && prev?.powerSupply && prev.powerSupply[index]
+            ? round(powerSupply[index] - prev.powerSupply[index], 3)
+            : null;
     }
 
-    calcPowerSupplyCommon(epd: Epd): number {
-        return calcPowerSupplyCommon(epd);
+    calcPowerSupply(epd: Epd, index?: number): number {
+        return calcPowerSupply(epd, index) || null;
+    }
+
+    powerSupplyCommon({powerSupplyCommon, prev}: Epd, index: number): number {
+        return powerSupplyCommon && powerSupplyCommon[index] && prev?.powerSupplyCommon && prev.powerSupplyCommon[index]
+            ? round(powerSupplyCommon[index] - prev.powerSupplyCommon[index], 3)
+            : null;
+    }
+
+    calcPowerSupplyCommon(epd: Epd, index?: number): number {
+        return calcPowerSupplyCommon(epd, index) || null;
     }
 
     calcOtherPayments(epd: Epd): number {
