@@ -4,6 +4,7 @@ import {EpdsDetailsComponent} from './details.component';
 import {LoaderModule} from '~modules/loader/loader.module';
 import {MomentPipeModule} from '~modules/moment/moment-pipe.module';
 import {AmountPipeModule} from '~modules/amount/amount-pipe.module';
+import {PricePipeModule} from '~modules/price/price-pipe.module';
 
 @NgModule({
     declarations: [
@@ -16,7 +17,8 @@ import {AmountPipeModule} from '~modules/amount/amount-pipe.module';
         CommonModule,
         LoaderModule,
         MomentPipeModule,
-        AmountPipeModule
+        AmountPipeModule,
+        PricePipeModule
     ]
 })
 export class EpdsDetailsModule {}

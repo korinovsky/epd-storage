@@ -5,10 +5,11 @@ import {Observable} from 'rxjs';
 import {Epd} from '~models/epd.model';
 import {
     calcCommonHeatSupply, calcHeatSupply, calcMaintenance, calcOtherPayments, calcOwnHeatSupply, calcPowerSupply,
-    calcPowerSupplyCommon, calcTotal, calcWaterDisposal, calcWaterHeatSupply, calcWaterSupply, round
+    calcPowerSupplyCommon, calcTotal, calcWaterDisposal, calcWaterHeatSupply, calcWaterSupply
 } from '~app/pages/epds/epds.functions';
 import {filter, map} from 'rxjs/operators';
 import _identity from 'lodash/identity';
+import {round} from '~app/shared/functions/util.functions';
 
 @Component({
     templateUrl: './details.component.html',

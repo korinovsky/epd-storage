@@ -2,10 +2,10 @@ import {Pipe, PipeTransform} from '@angular/core';
 import {formatAmount} from '~app/shared/functions/util.functions';
 
 @Pipe({
-    name: 'amount'
+    name: 'price'
 })
-export class AmountPipe implements PipeTransform {
+export class PricePipe implements PipeTransform {
     transform(value: number): string {
-        return value ? formatAmount(value, 3) : '';
+        return value ? formatAmount(value) + ' ₽' : '';
     }
 }

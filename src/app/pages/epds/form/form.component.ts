@@ -85,6 +85,7 @@ export class EpdsFormComponent {
                         } as Epd;
                         return Object.assign({}, prevEpd, {
                             date: moment(prevEpd.date).add(1, 'month'),
+                            heatSupply: [prevEpd.heatSupply && prevEpd.heatSupply[0] || null],
                             powerSupplyCommon: [],
                             otherPayments: [],
                             receiptTotalPayment: null,

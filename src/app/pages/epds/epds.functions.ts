@@ -1,7 +1,6 @@
 import {Epd} from '~models/epd.model';
 import {Tariff} from '~models/tariff.model';
-
-export const round = (num: number, decimals = 2) => Math.round((num + Number.EPSILON) * Math.pow(10, decimals)) / Math.pow(10, decimals);
+import {round} from '~app/shared/functions/util.functions';
 
 export function calcMaintenance({tariff, address: {area}}: Epd): number {
     const {maintenance: tariffMaintenance} =  tariff ?? {} as Tariff;

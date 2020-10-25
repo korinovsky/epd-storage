@@ -16,100 +16,100 @@
         </tr>
         <tr *ngIf="calcMaintenance(epd) as value">
             <td>Содержание и текущий ремонт</td>
-            <td>{{epd.address.area}} м²</td>
+            <td>{{epd.address.area | amount}} м²</td>
             <td></td>
-            <td>{{epd.tariff.maintenance | amount}}</td>
-            <td>{{value | amount}}</td>
+            <td>{{epd.tariff.maintenance | price}}</td>
+            <td>{{value | price}}</td>
             <td></td>
-            <td>{{value | amount}}</td>
+            <td>{{value | price}}</td>
         </tr>
         <ng-container *ngIf="calcWaterSupply(epd) as value">
             <tr>
                 <td>Холодное водоснабжение</td>
-                <td>{{waterSupply(epd, 0)}}</td>
+                <td>{{waterSupply(epd, 0) | amount}}</td>
                 <td></td>
-                <td rowspan="2">{{epd.tariff.waterSupply | amount}}</td>
-                <td>{{calcWaterSupply(epd, 0) | amount}}</td>
+                <td rowspan="2">{{epd.tariff.waterSupply | price}}</td>
+                <td>{{calcWaterSupply(epd, 0) | price}}</td>
                 <td></td>
-                <td rowspan="2">{{value | amount}}</td>
+                <td rowspan="2">{{value | price}}</td>
             </tr>
             <tr>
                 <td>Холодное водоснабжение для ГВС</td>
-                <td>{{waterSupply(epd, 1)}}</td>
+                <td>{{waterSupply(epd, 1) | amount}}</td>
                 <td></td>
-                <td>{{calcWaterSupply(epd, 1) | amount}}</td>
+                <td>{{calcWaterSupply(epd, 1) | price}}</td>
                 <td></td>
             </tr>
             <tr>
                 <td>Водоотведение</td>
-                <td>{{waterDisposal(epd)}}</td>
+                <td>{{waterDisposal(epd) | amount}}</td>
                 <td></td>
-                <td>{{epd.tariff.waterSupply | amount}}</td>
-                <td>{{calcWaterDisposal(epd) | amount}}</td>
+                <td>{{epd.tariff.waterSupply | price}}</td>
+                <td>{{calcWaterDisposal(epd) | price}}</td>
                 <td></td>
-                <td>{{calcWaterDisposal(epd) | amount}}</td>
+                <td>{{calcWaterDisposal(epd) | price}}</td>
             </tr>
         </ng-container>
         <tr *ngIf="calcHeatSupply(epd) as value">
             <td>Отопление</td>
-            <td>{{ownHeatSupply(epd)}}</td>
-            <td>{{commonHeatSupply(epd)}}</td>
-            <td>{{epd.tariff.heatSupply | amount}}</td>
-            <td>{{calcOwnHeatSupply(epd) | amount}}</td>
-            <td>{{calcCommonHeatSupply(epd) | amount}}</td>
-            <td>{{value | amount}}</td>
+            <td>{{ownHeatSupply(epd) | amount}}</td>
+            <td>{{commonHeatSupply(epd) | amount}}</td>
+            <td>{{epd.tariff.heatSupply | price}}</td>
+            <td>{{calcOwnHeatSupply(epd) | price}}</td>
+            <td>{{calcCommonHeatSupply(epd) | price}}</td>
+            <td>{{value | price}}</td>
         </tr>
         <tr *ngIf="calcWaterHeatSupply(epd) as value">
             <td>Тепловая энергия для ГВС</td>
-            <td>{{waterHeatSupply(epd)}}</td>
+            <td>{{waterHeatSupply(epd) | amount}}</td>
             <td></td>
-            <td>{{epd.tariff.heatSupply | amount}}</td>
-            <td>{{value | amount}}</td>
+            <td>{{epd.tariff.heatSupply | price}}</td>
+            <td>{{value | price}}</td>
             <td></td>
-            <td>{{value | amount}}</td>
+            <td>{{value | price}}</td>
         </tr>
         <ng-container *ngIf="calcPowerSupply(epd) + calcPowerSupplyCommon(epd) as value">
             <tr>
                 <td>Электроснабжение дн. начисление</td>
-                <td>{{powerSupply(epd, 0)}}</td>
-                <td>{{powerSupplyCommon(epd, 0)}}</td>
-                <td>{{epd.tariff.powerSupply[0] | amount}}</td>
-                <td>{{calcPowerSupply(epd, 0) | amount}}</td>
-                <td>{{calcPowerSupplyCommon(epd, 0) | amount}}</td>
-                <td rowspan="3">{{value | amount}}</td>
+                <td>{{powerSupply(epd, 0) | amount}}</td>
+                <td>{{powerSupplyCommon(epd, 0) | amount}}</td>
+                <td>{{epd.tariff.powerSupply[0] | price}}</td>
+                <td>{{calcPowerSupply(epd, 0) | price}}</td>
+                <td>{{calcPowerSupplyCommon(epd, 0) | price}}</td>
+                <td rowspan="3">{{value | price}}</td>
             </tr>
             <tr>
                 <td>Электроснабжение нч. начисление</td>
-                <td>{{powerSupply(epd, 1)}}</td>
-                <td>{{powerSupplyCommon(epd, 1)}}</td>
-                <td>{{epd.tariff.powerSupply[1] | amount}}</td>
-                <td>{{calcPowerSupply(epd, 1) | amount}}</td>
-                <td>{{calcPowerSupplyCommon(epd, 1) | amount}}</td>
+                <td>{{powerSupply(epd, 1) | amount}}</td>
+                <td>{{powerSupplyCommon(epd, 1) | amount}}</td>
+                <td>{{epd.tariff.powerSupply[1] | price}}</td>
+                <td>{{calcPowerSupply(epd, 1) | price}}</td>
+                <td>{{calcPowerSupplyCommon(epd, 1) | price}}</td>
             </tr>
             <tr>
                 <td>Электроснабжение пик. начисление</td>
-                <td>{{powerSupply(epd, 2)}}</td>
-                <td>{{powerSupplyCommon(epd, 2)}}</td>
-                <td>{{epd.tariff.powerSupply[2] | amount}}</td>
-                <td>{{calcPowerSupply(epd, 2) | amount}}</td>
-                <td>{{calcPowerSupplyCommon(epd, 2) | amount}}</td>
+                <td>{{powerSupply(epd, 2) | amount}}</td>
+                <td>{{powerSupplyCommon(epd, 2) | amount}}</td>
+                <td>{{epd.tariff.powerSupply[2] | price}}</td>
+                <td>{{calcPowerSupply(epd, 2) | price}}</td>
+                <td>{{calcPowerSupplyCommon(epd, 2) | price}}</td>
             </tr>
         </ng-container>
         <tr *ngFor="let value of epd.otherPayments; let index = index">
             <td>Дополнительная сумма {{index + 1}}</td>
             <td colspan="5"></td>
-            <td>{{value | amount}}</td>
+            <td>{{value | price}}</td>
         </tr>
         <ng-container *ngIf="calcTotal(epd) as value">
             <tr>
                 <th>Итого</th>
                 <td colspan="5"></td>
-                <td>{{value | amount}}</td>
+                <td>{{value | price}}</td>
             </tr>
             <tr *ngIf="epd.receiptTotalPayment - value as diff">
                 <th>Разница с квитанцией</th>
                 <td colspan="5"></td>
-                <td [class.error-text]="diff > 0" [class.success-text]="diff < 0">{{diff | amount}}</td>
+                <td [class.error-text]="diff > 0" [class.success-text]="diff < 0">{{diff | price}}</td>
             </tr>
         </ng-container>
     </table>
