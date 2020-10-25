@@ -6,6 +6,9 @@
         </button>
     </mat-card-header>
     <mat-card-content>
-        Итого: {{total}}
+        Итого: {{total | amount}}
+        <ng-container *ngIf="totalDiff as diff">
+            (<span [class.error-text]="diff > 0" [class.success-text]="diff < 0">{{diff | amount}}</span>)
+        </ng-container>
     </mat-card-content>
 </mat-card>

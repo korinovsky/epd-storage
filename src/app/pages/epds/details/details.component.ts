@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 import {Epd} from '~models/epd.model';
 import {
     calcCommonHeatSupply, calcHeatSupply, calcMaintenance, calcOtherPayments, calcOwnHeatSupply, calcPowerSupply,
-    calcPowerSupplyCommon, calcTotal, calcWaterDisposal, calcWaterSupply, round
+    calcPowerSupplyCommon, calcTotal, calcWaterDisposal, calcWaterHeatSupply, calcWaterSupply, round
 } from '~app/pages/epds/epds.functions';
 import {filter, map} from 'rxjs/operators';
 import _identity from 'lodash/identity';
@@ -60,12 +60,20 @@ export class EpdsDetailsComponent {
         return heatSupply;
     }
 
+    waterHeatSupply({heatSupply: [, , heatSupply]}: Epd): number {
+        return heatSupply;
+    }
+
     calcOwnHeatSupply(epd: Epd): number {
         return calcOwnHeatSupply(epd);
     }
 
     calcCommonHeatSupply(epd: Epd): number {
         return calcCommonHeatSupply(epd);
+    }
+
+    calcWaterHeatSupply(epd: Epd): number {
+        return calcWaterHeatSupply(epd);
     }
 
     calcHeatSupply(epd: Epd): number {

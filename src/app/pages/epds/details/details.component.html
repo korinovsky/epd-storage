@@ -57,7 +57,16 @@
             <td>{{epd.tariff.heatSupply | amount}}</td>
             <td>{{calcOwnHeatSupply(epd) | amount}}</td>
             <td>{{calcCommonHeatSupply(epd) | amount}}</td>
-            <td>{{value}}</td>
+            <td>{{value | amount}}</td>
+        </tr>
+        <tr *ngIf="calcWaterHeatSupply(epd) as value">
+            <td>Тепловая энергия для ГВС</td>
+            <td>{{waterHeatSupply(epd)}}</td>
+            <td></td>
+            <td>{{epd.tariff.heatSupply | amount}}</td>
+            <td>{{value | amount}}</td>
+            <td></td>
+            <td>{{value | amount}}</td>
         </tr>
         <ng-container *ngIf="calcPowerSupply(epd) + calcPowerSupplyCommon(epd) as value">
             <tr>
@@ -100,7 +109,7 @@
             <tr *ngIf="epd.receiptTotalPayment - value as diff">
                 <th>Разница с квитанцией</th>
                 <td colspan="5"></td>
-                <td>{{diff | amount}}</td>
+                <td [class.error-text]="diff > 0" [class.success-text]="diff < 0">{{diff | amount}}</td>
             </tr>
         </ng-container>
     </table>

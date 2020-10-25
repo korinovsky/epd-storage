@@ -28,4 +28,8 @@ export class EpdsItemComponent {
     get total(): number {
         return calcTotal(this.epd);
     }
+
+    get totalDiff(): number {
+        return this.epd.receiptTotalPayment - this.total;
+    }
 }

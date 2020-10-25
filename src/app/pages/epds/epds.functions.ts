@@ -42,6 +42,13 @@ export function calcCommonHeatSupply({heatSupply, tariff}: Epd): number {
         : 0;
 }
 
+export function calcWaterHeatSupply({heatSupply, tariff}: Epd): number {
+    const {heatSupply: tariffHeatSupply} =  tariff ?? {} as Tariff;
+    return heatSupply && heatSupply[2] && tariffHeatSupply
+        ? round(heatSupply[2] * tariffHeatSupply)
+        : 0;
+}
+
 export function calcHeatSupply(epd: Epd): number {
     return calcOwnHeatSupply(epd) + calcCommonHeatSupply(epd);
 }
@@ -72,6 +79,6 @@ export function calcOtherPayments({otherPayments = []}: Epd): number {
 }
 
 export function calcTotal(epd: Epd): number {
-    return calcMaintenance(epd) + calcWaterSupply(epd) + calcWaterDisposal(epd) + calcHeatSupply(epd) + calcPowerSupply(epd)
-        + calcPowerSupplyCommon(epd) + calcOtherPayments(epd);
+    return calcMaintenance(epd) + calcWaterSupply(epd) + calcWaterDisposal(epd) + calcHeatSupply(epd) + calcWaterHeatSupply(epd)
+        + calcPowerSupply(epd) + calcPowerSupplyCommon(epd) + calcOtherPayments(epd);
 }

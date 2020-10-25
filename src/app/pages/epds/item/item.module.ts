@@ -5,6 +5,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MomentPipeModule} from '~modules/moment/moment-pipe.module';
+import {AmountPipeModule} from '~modules/amount/amount-pipe.module';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,8 @@ import {MomentPipeModule} from '~modules/moment/moment-pipe.module';
         MatCardModule,
         MatIconModule,
         MatButtonModule,
-        MomentPipeModule
+        MomentPipeModule,
+        AmountPipeModule
     ]
 })
 export class EpdsItemModule {}

@@ -25,6 +25,7 @@ export class EpdsFormComponent {
         ]),
         heatSupply: this.formBuilder.array([
             [null],
+            [null],
             [null]
         ]),
         powerSupply: this.formBuilder.array([
