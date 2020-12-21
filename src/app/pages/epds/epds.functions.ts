@@ -67,7 +67,7 @@ export function calcPowerSupplyCommon({powerSupplyCommon, tariff}: Epd, index?: 
     const {powerSupply: tariffPowerSupply} =  tariff ?? {} as Tariff;
     return powerSupplyCommon && tariffPowerSupply
         ? powerSupplyCommon.reduce((result, value, i) =>
-            result + index === undefined || index === i ? round(value * tariffPowerSupply[i]) : 0,
+            result + ((index === undefined || index === i) ? round(value * tariffPowerSupply[i]) : 0),
             0
         )
         : 0;
